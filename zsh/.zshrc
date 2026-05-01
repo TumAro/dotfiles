@@ -6,7 +6,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-zinit light Aloxaf/fzf-tab
+# zinit light Aloxaf/fzf-tab
 
 # Useful snippets from Oh My Zsh (just the good parts, no OMZ needed)
 zinit snippet OMZP::git
@@ -16,10 +16,13 @@ zinit snippet OMZP::command-not-found
 # ── Completion ────────────────────────────────────────────────────────────────
 autoload -Uz compinit && compinit
 
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' squeeze-slashes true
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# zstyle ':completion:*' menu no
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # ── History ───────────────────────────────────────────────────────────────────
 HISTSIZE=10000

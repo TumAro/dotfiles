@@ -110,7 +110,19 @@ bindsym $mod+r mode "resize"
 # ── System controls ───────────────────────────────────────────────────────────
 bindsym $mod+shift+c reload                  # reload config
 bindsym $mod+shift+r restart                 # restart i3 in place
-bindsym $mod+shift+e exec i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'
+
+# Power menu — Super+Escape
+set $mode_system System: (l)ock (e)logout (s)suspend (r)reboot (p)poweroff
+mode "$mode_system" {
+  bindsym l exec "i3lock -c 1e1e2e & sleep 1 && xset dpms force off", mode "default"
+  bindsym e exec i3-msg exit, mode "default"
+  bindsym s exec systemctl suspend, mode "default"
+  bindsym r exec systemctl reboot, mode "default"
+  bindsym p exec systemctl poweroff, mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Escape mode "$mode_system"
 
 # Volume keys
 bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
