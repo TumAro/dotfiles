@@ -36,9 +36,20 @@ bindkey '^n' history-search-forward
 # ── Tools ─────────────────────────────────────────────────────────────────────
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
 
 # ── Aliases ───────────────────────────────────────────────────────────────────
+
+# yazi
+function y () {
+  local tmp="$(mktemp -t yazi-cwd.XXXXXX)" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
 # Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -116,6 +127,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
+
 
 # ── Machine-local overrides (secrets, machine-specific aliases) ───────────────
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

@@ -1,0 +1,47 @@
+[user]
+	name = tumaro
+	email = contact.tumins@gmail.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/tumin/.local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+  helper = !/home/tumin/.local/bin/gh auth git-credential
+
+[core]
+	editor = nvim
+	pager = delta
+
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[alias]
+	s  = status
+	l  = log --oneline --graph --decorate
+	la = log --oneline --graph --decorate --all
+	d  = diff
+	ds = diff --staged
+	aa = add .
+	cm = commit -m
+	ca = commit --amend
+	p  = push
+	pl = pull
+	co = checkout
+	cb = checkout -b
+	rb = rebase
+	st = stash
+	sp = stash pop
+
+[push]
+	autoSetupRemote = true
+
+[pull]
+	rebase = false
