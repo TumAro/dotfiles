@@ -24,21 +24,15 @@
 	colorMoved = default
 
 [alias]
-	s  = status
-	l  = log --oneline --graph --decorate
-	la = log --oneline --graph --decorate --all
-	d  = diff
-	ds = diff --staged
-	aa = add .
-	cm = commit -m
-	ca = commit --amend
-	p  = push
-	pl = pull
-	co = checkout
-	cb = checkout -b
-	rb = rebase
-	st = stash
-	sp = stash pop
+    s  = status
+    l  = log --oneline --graph --decorate
+    aa = add .
+    cm = commit -m
+    ca = commit --amend --no-edit
+    p  = push
+    pl = pull --rebase
+    d  = diff
+    ds = diff --staged
 
 [push]
 	autoSetupRemote = true
