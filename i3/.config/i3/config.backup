@@ -5,37 +5,30 @@ set $mod Mod4
 font pango:JetBrainsMonoNL Nerd Font 10
 
 # ── Startup ───────────────────────────────────────────────────────────────────
-exec --no-startup-id picom --daemon          # transparency/compositor
-exec --no-startup-id nm-applet               # network manager tray icon
+exec --no-startup-id picom --daemon
+exec --no-startup-id nm-applet
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
-bindsym $mod+Return exec $term
+bindsym ctrl+alt+t exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
-bindsym $mod+d exec rofi -show drun
+bindsym $mod+space exec rofi -show drun
+
+# ── App switcher (rofi) ───────────────────────────────────────────────────────
+bindsym Mod1+Tab exec rofi -show window
 
 # ── Window management ─────────────────────────────────────────────────────────
-bindsym $mod+shift+q kill                    # close window
-bindsym $mod+f fullscreen toggle             # fullscreen
+bindsym Mod1+F4      kill
+bindsym $mod+F11     fullscreen toggle
+bindsym $mod+shift+space floating toggle
 
-# Focus — vim keys
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-
-# Focus — arrow keys (same thing, pick what feels natural)
+# Focus — arrow keys
 bindsym $mod+Left  focus left
 bindsym $mod+Down  focus down
 bindsym $mod+Up    focus up
 bindsym $mod+Right focus right
-
-# Move windows — vim keys
-bindsym $mod+shift+h move left
-bindsym $mod+shift+j move down
-bindsym $mod+shift+k move up
-bindsym $mod+shift+l move right
 
 # Move windows — arrow keys
 bindsym $mod+shift+Left  move left
@@ -43,18 +36,9 @@ bindsym $mod+shift+Down  move down
 bindsym $mod+shift+Up    move up
 bindsym $mod+shift+Right move right
 
-# Split direction
-bindsym $mod+b split h                       # split horizontally
-bindsym $mod+v split v                       # split vertically
-
-# Layout modes
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# Floating
-bindsym $mod+shift+space floating toggle
-bindsym $mod+space focus mode_toggle
+# ── Splits ────────────────────────────────────────────────────────────────────
+bindsym $mod+s split h
+bindsym $mod+d split v
 
 # ── Workspaces ────────────────────────────────────────────────────────────────
 set $ws1 "1"
@@ -68,7 +52,6 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-# Switch to workspace
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
@@ -80,7 +63,6 @@ bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
-# Move window to workspace
 bindsym $mod+shift+1 move container to workspace $ws1
 bindsym $mod+shift+2 move container to workspace $ws2
 bindsym $mod+shift+3 move container to workspace $ws3
@@ -94,10 +76,6 @@ bindsym $mod+shift+0 move container to workspace $ws10
 
 # ── Resize mode ───────────────────────────────────────────────────────────────
 mode "resize" {
-  bindsym h resize shrink width 10 px or 10 ppt
-  bindsym j resize grow height 10 px or 10 ppt
-  bindsym k resize shrink height 10 px or 10 ppt
-  bindsym l resize grow width 10 px or 10 ppt
   bindsym Left  resize shrink width 10 px or 10 ppt
   bindsym Down  resize grow height 10 px or 10 ppt
   bindsym Up    resize shrink height 10 px or 10 ppt
@@ -107,43 +85,39 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-# ── System controls ───────────────────────────────────────────────────────────
-bindsym $mod+shift+c reload                  # reload config
-bindsym $mod+shift+r restart                 # restart i3 in place
-bindsym $mod+shift+e exec i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'
+# Mouse resize
+floating_modifier $mod
 
-# Volume keys
+# ── System controls ───────────────────────────────────────────────────────────
+bindsym $mod+shift+c reload
+bindsym $mod+shift+r restart
+
+# ── Power menu ────────────────────────────────────────────────────────────────
+set $mode_system System: (l)ock (e)logout (s)suspend (r)reboot (p)poweroff
+mode "$mode_system" {
+  bindsym l exec "i3lock -c 1e1e2e & sleep 1 && xset dpms force off", mode "default"
+  bindsym e exec i3-msg exit, mode "default"
+  bindsym s exec systemctl suspend, mode "default"
+  bindsym r exec systemctl reboot, mode "default"
+  bindsym p exec systemctl poweroff, mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Escape mode "$mode_system"
+
+# ── Volume ────────────────────────────────────────────────────────────────────
 bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
 bindsym XF86AudioLowerVolume exec amixer set Master 5%-
 bindsym XF86AudioMute        exec amixer set Master toggle
 
-# Screenshot
-bindsym Print exec scrot ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
-bindsym $mod+Print exec scrot -s ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
+# ── Screenshot ────────────────────────────────────────────────────────────────
+bindsym Print        exec scrot ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
+bindsym $mod+Print   exec scrot -s ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
 
-# ── Bar ───────────────────────────────────────────────────────────────────────
-bar {
-  status_command i3status
-  position bottom
-  font pango:JetBrainsMonoNL Nerd Font 10
-}
+# ── Yazi file manager ─────────────────────────────────────────────────────────
+bindsym $mod+e exec ~/.local/kitty.app/bin/kitty -e yazi
 
 # ── Appearance ────────────────────────────────────────────────────────────────
-# Gaps (needs i3-gaps, skip if not installed)
-# gaps inner 8
-# gaps outer 4
-
 default_border pixel 2
 default_floating_border pixel 2
 hide_edge_borders smart
-
-# ── Theme colours ─────────────────────────────────────────────────────────────
-# You set these — find i3 colour schemes at:
-# https://github.com/topics/i3-colorscheme
-# https://i3themes.sleeplessbeastie.eu
-# Format: client.focused <border> <background> <text> <indicator> <child_border>
-# Uncomment and fill when you pick a theme:
-# client.focused          #4C7899 #285577 #ffffff #2e9ef4 #285577
-# client.unfocused        #333333 #222222 #888888 #292d2e #222222
-# client.focused_inactive #333333 #5f676a #ffffff #484e50 #5f676a
-# client.urgent           #2f343a #900000 #ffffff #900000 #900000

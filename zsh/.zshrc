@@ -1,4 +1,7 @@
 # ── Zinit bootstrap ───────────────────────────────────────────────────────────
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
@@ -37,7 +40,6 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 
 # ── Tools ─────────────────────────────────────────────────────────────────────
-# eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
@@ -125,12 +127,6 @@ export GEM_HOME="$HOME/gems"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
-
 
 # ── Machine-local overrides (secrets, machine-specific aliases) ───────────────
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

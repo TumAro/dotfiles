@@ -7,6 +7,7 @@ font pango:JetBrainsMonoNL Nerd Font 10
 # ── Startup ───────────────────────────────────────────────────────────────────
 exec --no-startup-id picom --daemon
 exec --no-startup-id nm-applet
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
@@ -36,8 +37,8 @@ bindsym $mod+shift+Up    move up
 bindsym $mod+shift+Right move right
 
 # ── Splits ────────────────────────────────────────────────────────────────────
-bindsym $mod+s split h                       # side by side
-bindsym $mod+d split v                       # top/bottom
+bindsym $mod+s split h
+bindsym $mod+d split v
 
 # ── Workspaces ────────────────────────────────────────────────────────────────
 set $ws1 "1"
@@ -91,7 +92,7 @@ floating_modifier $mod
 bindsym $mod+shift+c reload
 bindsym $mod+shift+r restart
 
-# Power menu
+# ── Power menu ────────────────────────────────────────────────────────────────
 set $mode_system System: (l)ock (e)logout (s)suspend (r)reboot (p)poweroff
 mode "$mode_system" {
   bindsym l exec "i3lock -c 1e1e2e & sleep 1 && xset dpms force off", mode "default"
@@ -113,12 +114,8 @@ bindsym XF86AudioMute        exec amixer set Master toggle
 bindsym Print        exec scrot ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
 bindsym $mod+Print   exec scrot -s ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
 
-# ── Bar ───────────────────────────────────────────────────────────────────────
-bar {
-  status_command i3status
-  position bottom
-  font pango:JetBrainsMonoNL Nerd Font 10
-}
+# ── Yazi file manager ─────────────────────────────────────────────────────────
+bindsym $mod+e exec ~/.local/kitty.app/bin/kitty -e yazi
 
 # ── Appearance ────────────────────────────────────────────────────────────────
 default_border pixel 2
