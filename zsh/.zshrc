@@ -37,7 +37,7 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 
 # ── Tools ─────────────────────────────────────────────────────────────────────
-eval "$(fzf --zsh)"
+# eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
