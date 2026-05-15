@@ -11,7 +11,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
-bindsym ctrl+alt+t exec $term
+bindsym $mod+Return exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
 bindsym $mod+space exec rofi -show drun
