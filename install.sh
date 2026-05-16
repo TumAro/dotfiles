@@ -75,6 +75,7 @@ symlink "$DOTFILES/nvim/.config/nvim"             "$HOME/.config/nvim"
 symlink "$DOTFILES/i3/.config/i3"                 "$HOME/.config/i3"
 symlink "$DOTFILES/yazi/.config/yazi"             "$HOME/.config/yazi"
 symlink "$DOTFILES/polybar/.config/polybar"       "$HOME/.config/polybar"
+symlink "$DOTFILES/starship/.config/starship.toml" "$HOME/.config/starship.toml"
 chmod +x "$DOTFILES/polybar/.config/polybar/launch.sh"
 
 echo "→ Setting zsh as default shell..."
