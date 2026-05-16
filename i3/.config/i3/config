@@ -93,17 +93,8 @@ bindsym $mod+shift+c reload
 bindsym $mod+shift+r restart
 
 # ── Power menu ────────────────────────────────────────────────────────────────
-set $mode_system System: (l)ock (e)logout (s)suspend (r)reboot (p)poweroff
-mode "$mode_system" {
-  bindsym l exec "i3lock -c 1e1e2e & sleep 1 && xset dpms force off", mode "default"
-  bindsym e exec i3-msg exit, mode "default"
-  bindsym s exec systemctl suspend, mode "default"
-  bindsym r exec systemctl reboot, mode "default"
-  bindsym p exec systemctl poweroff, mode "default"
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-}
-bindsym $mod+Escape mode "$mode_system"
+bindsym $mod+Escape exec ~/.config/polybar/forest/scripts/powermenu.sh
+bindsym $mod+l exec i3lock -c 212B30
 
 # ── Volume ────────────────────────────────────────────────────────────────────
 bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
