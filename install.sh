@@ -45,6 +45,9 @@ wget -qO /tmp/JetBrainsMono.zip \
 unzip -o /tmp/JetBrainsMono.zip -d ~/.local/share/fonts/JetBrainsMono/ '*.ttf' 2>/dev/null || true
 fc-cache -fv ~/.local/share/fonts
 
+echo "→ Fonts..."
+cp "$DOTFILES/fonts/"* ~/.local/share/fonts/ && fc-cache -fv > /dev/null
+
 echo "→ Installing Vesktop..."
 VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/latest \
   | grep "browser_download_url.*amd64\.deb" | cut -d'"' -f4)

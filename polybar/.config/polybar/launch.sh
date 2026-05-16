@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
-polybar main --config=$HOME/.config/polybar/config.ini &
+polybar main -c "$HOME/.config/polybar/forest/config.ini" &
