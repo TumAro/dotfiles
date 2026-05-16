@@ -14,10 +14,10 @@ set $term ~/.local/kitty.app/bin/kitty
 bindsym $mod+Return exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
-bindsym $mod+space exec rofi -show drun
+bindsym $mod+space exec ~/.config/polybar/forest/scripts/launcher.sh
 
 # ── App switcher (rofi) ───────────────────────────────────────────────────────
-bindsym Mod1+Tab exec rofi -show window
+bindsym Mod1+Tab exec --no-startup-id rofi -no-config -show window -theme ~/.config/polybar/forest/scripts/rofi/launcher.rasi
 
 # ── Window management ─────────────────────────────────────────────────────────
 bindsym Mod1+F4      kill
