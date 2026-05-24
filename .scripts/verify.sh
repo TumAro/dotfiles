@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=7
+STEP_TOTAL=8
 _PASS=0
 _FAIL=0
 
@@ -36,6 +36,7 @@ _check "i3"            "$DOTFILES/i3/.config/i3"                  "$HOME/.config
 _check "yazi"          "$DOTFILES/yazi/.config/yazi"              "$HOME/.config/yazi"
 _check "polybar"       "$DOTFILES/polybar/.config/polybar"        "$HOME/.config/polybar"
 _check "starship.toml" "$DOTFILES/starship/.config/starship.toml" "$HOME/.config/starship.toml"
+_check "helix config" "$DOTFILES/helix/.config/helix/config.toml" "$HOME/.config/helix/config.toml"
 
 printf "\n  ${_G}%d ok${_X}  ${_R}%d fail${_X}\n\n" "$_PASS" "$_FAIL"
 log "VERIFY summary: $_PASS ok, $_FAIL fail"
