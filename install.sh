@@ -1,96 +1,35 @@
 #!/usr/bin/env bash
-set -e
+set -uo pipefail
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export DOTFILES
 
-echo "→ Installing packages..."
-sudo apt update -qq
-sudo apt install -y \
-  zsh git curl wget fzf ripgrep fd-find bat \
-  i3 i3status rofi picom xclip polybar \
-  build-essential cmake python3 python3-pip \
-  fontconfig wmctrl \
-  udiskie gvfs gvfs-backends thunar
+source "$DOTFILES/.scripts/utils.sh"
 
-echo "→ Installing kitty..."
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-mkdir -p ~/.local/bin
-ln -sf ~/.local/kitty.app/bin/kitty ~/.local/bin/kitty
+printf '\n'
+printf "  ${_B}Dotfiles Installer${_X}\n"
+printf "  Log → %s\n" "$LOG_FILE"
+printf '\n'
 
-echo "→ Installing delta..."
-wget -qO /tmp/delta.deb \
-  https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb
-sudo dpkg -i /tmp/delta.deb
+log "=== Install started $(date) ==="
 
-echo "→ Installing yazi..."
-YAZI_URL=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest \
-  | grep "browser_download_url.*x86_64-unknown-linux-gnu.tar.gz" | cut -d'"' -f4)
-wget -qO /tmp/yazi.tar.gz "$YAZI_URL"
-tar -xzf /tmp/yazi.tar.gz -C /tmp
-sudo mv /tmp/yazi-x86_64-unknown-linux-gnu/yazi ~/.local/bin/
-sudo mv /tmp/yazi-x86_64-unknown-linux-gnu/ya ~/.local/bin/
+bash "$DOTFILES/.scripts/deps.sh"
+bash "$DOTFILES/.scripts/link.sh"
 
-echo "→ Installing starship..."
-curl -sS https://starship.rs/install.sh | sh
-
-echo "→ Installing zoxide..."
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-
-echo "→ Installing zinit..."
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
-
-echo "→ Installing JetBrainsMono Nerd Font..."
-mkdir -p ~/.local/share/fonts
-wget -qO /tmp/JetBrainsMono.zip \
-  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
-unzip -o /tmp/JetBrainsMono.zip -d ~/.local/share/fonts/JetBrainsMono/ '*.ttf' 2>/dev/null || true
-fc-cache -fv ~/.local/share/fonts
-
-echo "→ Fonts..."
-cp -r "$DOTFILES/fonts/"* ~/.local/share/fonts/ && fc-cache -fv > /dev/null
-
-echo "→ Installing Vesktop..."
-VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/latest \
-  | grep "browser_download_url.*amd64\.deb" | cut -d'"' -f4)
-wget -qO /tmp/vesktop.deb "$VESKTOP_URL"
-sudo dpkg -i /tmp/vesktop.deb
-
-echo "→ Installing udiskie..."
-systemctl --user enable udiskie
-
-echo "→ bat symlink..."
-mkdir -p ~/.local/bin
-ln -sf /usr/bin/batcat ~/.local/bin/bat
-
-echo "→ Linking dotfiles..."
-cd "$DOTFILES"
-symlink() {
-  local src="$1" dst="$2"
-  mkdir -p "$(dirname "$dst")"
-  ln -sf "$src" "$dst"
-  echo "  ✓ $dst → $src"
-}
-
-symlink "$DOTFILES/zsh/.zshrc"                     "$HOME/.zshrc"
-symlink "$DOTFILES/git/.gitconfig"                 "$HOME/.gitconfig"
-symlink "$DOTFILES/kitty/.config/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
-symlink "$DOTFILES/kitty/.config/kitty/colors.conf" "$HOME/.config/kitty/colors.conf"
-symlink "$DOTFILES/i3/.config/i3"                  "$HOME/.config/i3"
-symlink "$DOTFILES/yazi/.config/yazi"              "$HOME/.config/yazi"
-symlink "$DOTFILES/polybar/.config/polybar"        "$HOME/.config/polybar"
-symlink "$DOTFILES/starship/.config/starship.toml" "$HOME/.config/starship.toml"
-chmod +x "$DOTFILES/polybar/.config/polybar/launch.sh"
-
-echo "→ Setting zsh as default shell..."
-chsh -s "$(which zsh)"
-
-echo "→ Creating ~/.zshrc.local if missing..."
-if [[ ! -f ~/.zshrc.local ]]; then
-  cat > ~/.zshrc.local << 'EOF'
-# Machine-specific secrets and aliases — not tracked by git
-EOF
+# ── set default shell ─────────────────────────────────────────
+printf '\n'
+if [[ "$SHELL" != "$(which zsh)" ]]; then
+  printf "  Setting zsh as default shell...\n"
+  chsh -s "$(which zsh)" || true
+  log "chsh zsh"
 fi
 
-echo ""
-echo "DONE! Next steps:"
-echo "  1. Add secrets to ~/.zshrc.local"
-echo "  2. Log out → select i3 session"
+# ── cleanup temp files ────────────────────────────────────────
+printf "  Cleaning temp files...\n"
+rm -f /tmp/delta.deb /tmp/yazi.deb /tmp/JetBrainsMono.zip /tmp/vesktop.deb
+log "Cleanup done"
+
+log "=== Install finished $(date) ==="
+
+printf '\n'
+printf "  ${_G}Done.${_X}\n"
+printf "  Next: secrets → ~/.zshrc.local  ·  log out → select i3\n\n"
