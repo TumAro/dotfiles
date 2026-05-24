@@ -12,13 +12,13 @@ phase_header "Phase 3: Verify symlinks"
 _check() {
   local label="$1" src="$2" dst="$3"
   STEP_N=$(( STEP_N + 1 ))
-  if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
+  if [[ -L "$dst" && "$(readlink -f "$dst")" == "$src" ]]; then
     printf "  ${_G}ok${_X}  %s\n" "$label"
     log "VERIFY ok $dst"
     _PASS=$(( _PASS + 1 ))
   elif [[ -L "$dst" ]]; then
-    printf "  ${_R}BROKEN${_X}  %s  (points to %s)\n" "$label" "$(readlink "$dst")"
-    log "VERIFY BROKEN $dst -> $(readlink "$dst") (expected $src)"
+    printf "  ${_R}BROKEN${_X}  %s  (resolves to %s)\n" "$label" "$(readlink -f "$dst")"
+    log "VERIFY BROKEN $dst -> $(readlink -f "$dst") (expected $src)"
     _FAIL=$(( _FAIL + 1 ))
   else
     printf "  ${_R}MISSING${_X} %s\n" "$label"
