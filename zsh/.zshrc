@@ -17,7 +17,7 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 
 # ── Completion ────────────────────────────────────────────────────────────────
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' squeeze-slashes true
