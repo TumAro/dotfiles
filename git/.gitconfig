@@ -2,14 +2,14 @@
 	name = tumaro
 	email = contact.tumins@gmail.com
 [credential "https://github.com"]
-	helper = 
-	helper = !/home/tumin/.local/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
-  helper = !/home/tumin/.local/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
 
 [core]
-	editor = nvim
+	editor = hx
 	pager = delta
 
 [delta]

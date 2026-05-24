@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=12
+STEP_TOTAL=13
 
 # ── Architecture detection ─────────────────────────────────────
 _ARCH="$(uname -m)"
@@ -190,6 +190,41 @@ else
          "https://github.com/eza-community/eza/releases/download/${EZA_VER}/eza_${RUST_ARCH}.tar.gz" \
          >> "$LOG_FILE" 2>&1 && \
        tar -xzf /tmp/eza.tar.gz -C ~/.local/bin/ eza >> "$LOG_FILE" 2>&1; then
+      step_done
+    else
+      step_fail
+    fi
+  fi
+fi
+
+# ── helix ─────────────────────────────────────────────────────
+step_start "helix"
+if command -v hx &>/dev/null; then
+  step_skip
+else
+  if apt-cache show helix &>/dev/null 2>&1; then
+    if sudo apt install -y helix >> "$LOG_FILE" 2>&1; then
+      step_done
+    else
+      step_fail
+    fi
+  else
+    HX_VER=$(curl -s https://api.github.com/repos/helix-editor/helix/releases/latest \
+      | grep '"tag_name"' | cut -d'"' -f4)
+    case "$_ARCH" in
+      x86_64)        HX_ARCH="x86_64" ;;
+      aarch64|arm64) HX_ARCH="aarch64" ;;
+      *)             HX_ARCH="x86_64" ;;
+    esac
+    HX_DIR="/tmp/helix-${HX_VER}-${HX_ARCH}-linux"
+    mkdir -p ~/.local/bin ~/.config/helix
+    if wget -qO /tmp/helix.tar.xz \
+         "https://github.com/helix-editor/helix/releases/download/${HX_VER}/helix-${HX_VER}-${HX_ARCH}-linux.tar.xz" \
+         >> "$LOG_FILE" 2>&1 && \
+       tar -xJf /tmp/helix.tar.xz -C /tmp/ >> "$LOG_FILE" 2>&1 && \
+       mv "${HX_DIR}/hx" ~/.local/bin/hx && \
+       rm -rf ~/.config/helix/runtime && \
+       mv "${HX_DIR}/runtime" ~/.config/helix/runtime; then
       step_done
     else
       step_fail

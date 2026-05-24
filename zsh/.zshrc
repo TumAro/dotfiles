@@ -9,7 +9,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-# zinit light Aloxaf/fzf-tab
 
 # Useful snippets from Oh My Zsh (just the good parts, no OMZ needed)
 zinit snippet OMZP::git
@@ -21,11 +20,8 @@ autoload -Uz compinit && compinit -u
 
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' squeeze-slashes true
-
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# zstyle ':completion:*' menu no
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # ── History ───────────────────────────────────────────────────────────────────
 HISTSIZE=10000
@@ -45,8 +41,8 @@ eval "$(zoxide init zsh)"
 
 # ── Aliases ───────────────────────────────────────────────────────────────────
 
-# yazi
-function y () {
+# yazi — with cwd tracking
+function y() {
   local tmp="$(mktemp -t yazi-cwd.XXXXXX)" cwd
   yazi "$@" --cwd-file="$tmp"
   if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -59,35 +55,34 @@ function y () {
 alias ..='cd ..'
 alias ...='cd ../..'
 
-# eza — better ls (shows icons, git status, colours)
+# eza — better ls
 alias ls='eza --icons=always'
 alias l='eza -al --icons=always'
 alias ll='eza -lg --icons=always'
 alias la='eza -lag --icons=always'
 alias lt='eza -lT --icons=always --level=2'
 
-# bat — better cat (syntax highlighting, line numbers)
+# bat — better cat
 alias cat='bat --pager=never'
 
-# fd — better find (binary name differs across distros)
+# fd — binary name differs across distros
 command -v fdfind &>/dev/null && alias find='fdfind' || command -v fd &>/dev/null && alias find='fd' || true
 
 # ripgrep — better grep
 alias grep='rg'
 
 # Editor
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
+alias v='hx'
+alias vi='hx'
+alias vim='hx'
+export EDITOR='hx'
+export VISUAL='hx'
 
 # Git shortcuts
 alias g='git'
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate'
 alias gd='git diff'
-
-# File manager
-alias f='yazi'
 
 # Python
 alias py='python3'
@@ -100,22 +95,19 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 # Quick config edits
-alias ezsh='nvim ~/dotfiles/zsh/.zshrc && source ~/.zshrc'
-alias ei3='nvim ~/dotfiles/i3/.config/i3/config'
-alias ekitty='nvim ~/dotfiles/kitty/.config/kitty/kitty.conf'
+alias ezsh='hx ~/dotfiles/zsh/.zshrc && source ~/.zshrc'
+alias ei3='hx ~/dotfiles/i3/.config/i3/config'
+alias ekitty='hx ~/dotfiles/kitty/.config/kitty/kitty.conf'
 
 # Misc
-alias venv-activate='source ./.venv/bin/activate'
 alias peek='peek -b ffmpeg'
 alias ssh='TERM=xterm-256color ssh'
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/gems/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"          # picks up our nvim AppImage
-export PATH="$OPENCODE_PATH:$PATH"
+export PATH="/usr/local/bin:$PATH"
+[[ -n "${OPENCODE_PATH:-}" ]] && export PATH="$OPENCODE_PATH:$PATH"
 
-export EDITOR='nvim'
-export VISUAL='nvim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
