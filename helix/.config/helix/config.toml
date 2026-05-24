@@ -4,6 +4,13 @@ theme = "ayu_dark"
 line-number = "absolute"
 auto-save = true
 cursorline = true
+gutters = ["diagnostics", "line-numbers", "spacer", "diff"]
+completion-trigger-len = 2
+
+inline-diagnostics.cursor-line = "disable"
+lsp.display-inlay-hints = false
+
+auto-pairs = true
 
 [editor.cursor-shape]
 insert = "bar"
