@@ -3,18 +3,30 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=11
+STEP_TOTAL=12
+
+# ── Architecture detection ─────────────────────────────────────
+_ARCH="$(uname -m)"
+case "$_ARCH" in
+  x86_64)        DEB_ARCH="amd64";  RUST_ARCH="x86_64-unknown-linux-gnu" ;;
+  aarch64|arm64) DEB_ARCH="arm64";  RUST_ARCH="aarch64-unknown-linux-gnu" ;;
+  armv7l)        DEB_ARCH="armhf";  RUST_ARCH="armv7-unknown-linux-gnueabihf" ;;
+  *)             DEB_ARCH="amd64";  RUST_ARCH="x86_64-unknown-linux-gnu"
+                 log "WARN: unknown arch $_ARCH, defaulting to amd64" ;;
+esac
 
 phase_header "Phase 1: Dependencies"
 
 # ── apt packages ──────────────────────────────────────────────
 step_start "apt packages"
+PICOM_PKG="picom"
+apt-cache show picom &>/dev/null 2>&1 || PICOM_PKG="compton"
 if sudo apt update -qq >> "$LOG_FILE" 2>&1 && \
    sudo apt install -y \
      zsh git curl wget fzf ripgrep fd-find bat \
-     i3 i3status rofi picom xclip polybar \
+     i3 i3status rofi "$PICOM_PKG" xclip polybar \
      build-essential cmake python3 python3-pip \
-     fontconfig wmctrl \
+     fontconfig wmctrl stow unzip \
      gvfs gvfs-backends thunar >> "$LOG_FILE" 2>&1; then
   step_done
 else
@@ -37,11 +49,11 @@ fi
 
 # ── delta ─────────────────────────────────────────────────────
 step_start "delta"
-if which delta &>/dev/null; then
+if command -v delta &>/dev/null; then
   step_skip
 else
   if wget -qO /tmp/delta.deb \
-       https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb \
+       "https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_${DEB_ARCH}.deb" \
        >> "$LOG_FILE" 2>&1 && \
      sudo dpkg -i /tmp/delta.deb >> "$LOG_FILE" 2>&1; then
     step_done
@@ -52,13 +64,13 @@ fi
 
 # ── yazi ──────────────────────────────────────────────────────
 step_start "yazi"
-if which yazi &>/dev/null; then
+if command -v yazi &>/dev/null; then
   step_skip
 else
   YAZI_VER=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest \
     | grep '"tag_name"' | cut -d'"' -f4)
   if wget -qO /tmp/yazi.deb \
-       "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-x86_64-unknown-linux-gnu.deb" \
+       "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-${RUST_ARCH}.deb" \
        >> "$LOG_FILE" 2>&1 && \
      sudo apt install -f /tmp/yazi.deb -y >> "$LOG_FILE" 2>&1; then
     step_done
@@ -69,7 +81,7 @@ fi
 
 # ── starship ──────────────────────────────────────────────────
 step_start "starship"
-if which starship &>/dev/null; then
+if command -v starship &>/dev/null; then
   step_skip
 else
   if curl -sS https://starship.rs/install.sh | sh -s -- --yes >> "$LOG_FILE" 2>&1; then
@@ -81,7 +93,7 @@ fi
 
 # ── zoxide ────────────────────────────────────────────────────
 step_start "zoxide"
-if which zoxide &>/dev/null; then
+if command -v zoxide &>/dev/null; then
   step_skip
 else
   if curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh >> "$LOG_FILE" 2>&1; then
@@ -133,11 +145,11 @@ fi
 
 # ── vesktop ───────────────────────────────────────────────────
 step_start "vesktop"
-if which vesktop &>/dev/null; then
+if command -v vesktop &>/dev/null; then
   step_skip
 else
   VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/latest \
-    | grep "browser_download_url.*amd64\.deb" | cut -d'"' -f4)
+    | grep "browser_download_url.*${DEB_ARCH}\.deb" | cut -d'"' -f4)
   if wget -qO /tmp/vesktop.deb "$VESKTOP_URL" >> "$LOG_FILE" 2>&1 && \
      sudo dpkg -i /tmp/vesktop.deb >> "$LOG_FILE" 2>&1; then
     step_done
@@ -149,10 +161,40 @@ fi
 # ── bat symlink ───────────────────────────────────────────────
 step_start "bat symlink"
 mkdir -p ~/.local/bin
-if ln -sf /usr/bin/batcat ~/.local/bin/bat >> "$LOG_FILE" 2>&1; then
-  step_done
+BAT_BIN="$(command -v batcat 2>/dev/null || command -v bat 2>/dev/null || true)"
+if [[ -n "$BAT_BIN" ]]; then
+  if ln -sf "$BAT_BIN" ~/.local/bin/bat >> "$LOG_FILE" 2>&1; then
+    step_done
+  else
+    step_fail
+  fi
 else
-  step_fail
+  step_fail "bat/batcat not found after apt install"
+fi
+
+# ── eza ───────────────────────────────────────────────────────
+step_start "eza"
+if command -v eza &>/dev/null; then
+  step_skip
+else
+  if apt-cache show eza &>/dev/null 2>&1; then
+    if sudo apt install -y eza >> "$LOG_FILE" 2>&1; then
+      step_done
+    else
+      step_fail
+    fi
+  else
+    EZA_VER=$(curl -s https://api.github.com/repos/eza-community/eza/releases/latest \
+      | grep '"tag_name"' | cut -d'"' -f4)
+    if wget -qO /tmp/eza.tar.gz \
+         "https://github.com/eza-community/eza/releases/download/${EZA_VER}/eza_${RUST_ARCH}.tar.gz" \
+         >> "$LOG_FILE" 2>&1 && \
+       tar -xzf /tmp/eza.tar.gz -C ~/.local/bin/ eza >> "$LOG_FILE" 2>&1; then
+      step_done
+    else
+      step_fail
+    fi
+  fi
 fi
 
 phase_bar

@@ -69,8 +69,8 @@ alias lt='eza -lT --icons=always --level=2'
 # bat — better cat (syntax highlighting, line numbers)
 alias cat='bat --pager=never'
 
-# fd — better find
-alias find='fdfind'
+# fd — better find (binary name differs across distros)
+command -v fdfind &>/dev/null && alias find='fdfind' || command -v fd &>/dev/null && alias find='fd' || true
 
 # ripgrep — better grep
 alias grep='rg'
@@ -101,7 +101,6 @@ alias rm='rm -i'
 
 # Quick config edits
 alias ezsh='nvim ~/dotfiles/zsh/.zshrc && source ~/.zshrc'
-alias envim='nvim ~/dotfiles/nvim/.config/nvim/'
 alias ei3='nvim ~/dotfiles/i3/.config/i3/config'
 alias ekitty='nvim ~/dotfiles/kitty/.config/kitty/kitty.conf'
 
