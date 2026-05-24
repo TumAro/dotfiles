@@ -8,7 +8,8 @@ sudo apt install -y \
   zsh git curl wget fzf ripgrep fd-find bat \
   i3 i3status rofi picom xclip polybar \
   build-essential cmake python3 python3-pip \
-  fontconfig wmctrl
+  fontconfig wmctrl \
+  udiskie gvfs gvfs-backends thunar
 
 echo "→ Installing kitty..."
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -21,7 +22,12 @@ wget -qO /tmp/delta.deb \
 sudo dpkg -i /tmp/delta.deb
 
 echo "→ Installing yazi..."
-sudo snap install yazi --classic
+YAZI_URL=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest \
+  | grep "browser_download_url.*x86_64-unknown-linux-gnu.tar.gz" | cut -d'"' -f4)
+wget -qO /tmp/yazi.tar.gz "$YAZI_URL"
+tar -xzf /tmp/yazi.tar.gz -C /tmp
+sudo mv /tmp/yazi-x86_64-unknown-linux-gnu/yazi ~/.local/bin/
+sudo mv /tmp/yazi-x86_64-unknown-linux-gnu/ya ~/.local/bin/
 
 echo "→ Installing starship..."
 curl -sS https://starship.rs/install.sh | sh
@@ -47,6 +53,9 @@ VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/late
   | grep "browser_download_url.*amd64\.deb" | cut -d'"' -f4)
 wget -qO /tmp/vesktop.deb "$VESKTOP_URL"
 sudo dpkg -i /tmp/vesktop.deb
+
+echo "→ Installing udiskie..."
+systemctl --user enable udiskie
 
 echo "→ bat symlink..."
 mkdir -p ~/.local/bin
