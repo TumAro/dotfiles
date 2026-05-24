@@ -98,6 +98,7 @@ alias rm='rm -i'
 alias ezsh='hx ~/dotfiles/zsh/.zshrc && source ~/.zshrc'
 alias ei3='hx ~/dotfiles/i3/.config/i3/config'
 alias ekitty='hx ~/dotfiles/kitty/.config/kitty/kitty.conf'
+alias ehx='hx ~/dotfiles/helix/.config/helix/config.toml'
 
 # Misc
 alias peek='peek -b ffmpeg'
