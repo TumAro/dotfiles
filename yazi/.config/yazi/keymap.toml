@@ -24,4 +24,8 @@ keymap = [
   { on = ".",        run = "hidden toggle",           desc = "Toggle hidden files" },
   { on = "<Esc>",    run = "escape",                  desc = "Cancel / deselect" },
   { on = "q",        run = "quit",                    desc = "Quit" },
-]
+
+  # ── bookmark ────────────────────────────────────────────────────────────────
+  { on = "a",        run = "bookmark_add",            desc = "Add bookmark" },
+  { on = "B",        run = "bookmark_jump",           desc = "Jump to bookmarks" },
+  { on = "<C-y>",    run = "yank --url",              desc = "Copy path" },]
