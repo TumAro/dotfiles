@@ -104,8 +104,10 @@ bindsym XF86AudioLowerVolume exec amixer set Master 5%-
 bindsym XF86AudioMute        exec amixer set Master toggle
 
 # ── Screenshot ────────────────────────────────────────────────────────────────
-bindsym Print        exec scrot ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
-bindsym $mod+Print   exec scrot -s ~/Pictures/screenshot-%Y%m%d-%H%M%S.png
+bindsym Print             exec maim -s | xclip -selection clipboard -t image/png
+bindsym $mod+shift+p      exec maim -s | xclip -selection clipboard -t image/png
+bindsym ctrl+Print        exec maim -s ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
+bindsym $mod+ctrl+p       exec maim -s ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
 
 # ── Yazi file manager ─────────────────────────────────────────────────────────
 bindsym $mod+e exec ~/.local/kitty.app/bin/kitty -e yazi
