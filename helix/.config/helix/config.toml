@@ -1,7 +1,7 @@
 theme = "ayu_dark"
 
 [editor]
-line-number = "absolute"
+line-number = "relative"
 auto-save = true
 cursorline = true
 gutters = ["diagnostics", "line-numbers", "spacer", "diff"]

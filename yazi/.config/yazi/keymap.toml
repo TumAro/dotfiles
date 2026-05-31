@@ -1,31 +1,7 @@
-[manager]
-keymap = [
-  # ── Navigation ──────────────────────────────────────────────────────────────
-  { on = "<Up>",     run = "arrow -1",               desc = "Move up" },
-  { on = "<Down>",   run = "arrow 1",                desc = "Move down" },
-  { on = "<Left>",   run = "leave",                  desc = "Go to parent" },
-  { on = "<Right>",  run = "enter",                  desc = "Enter folder / open file" },
-  { on = "<Enter>",  run = "open",                   desc = "Open file" },
-  { on = "<Home>",   run = "arrow -99999999",        desc = "Jump to top" },
-  { on = "<End>",    run = "arrow 99999999",         desc = "Jump to bottom" },
-
-  # ── File operations ─────────────────────────────────────────────────────────
-  { on = "<C-c>",    run = "yank",                   desc = "Copy" },
-  { on = "<C-x>",    run = "yank --cut",             desc = "Cut" },
-  { on = "<C-v>",    run = "paste",                  desc = "Paste" },
-  { on = "<Delete>", run = "remove",                 desc = "Trash" },
-  { on = "<F2>",     run = "rename",                 desc = "Rename" },
-  { on = "<C-n>",    run = "create",                 desc = "New file/folder (end with / for folder)" },
-
-  # ── Selection ───────────────────────────────────────────────────────────────
-  { on = "<C-a>",    run = "select_all --state=none", desc = "Select all" },
-
-  # ── View ────────────────────────────────────────────────────────────────────
-  { on = ".",        run = "hidden toggle",           desc = "Toggle hidden files" },
-  { on = "<Esc>",    run = "escape",                  desc = "Cancel / deselect" },
-  { on = "q",        run = "quit",                    desc = "Quit" },
-
-  # ── bookmark ────────────────────────────────────────────────────────────────
-  { on = "a",        run = "bookmark_add",            desc = "Add bookmark" },
-  { on = "B",        run = "bookmark_jump",           desc = "Jump to bookmarks" },
-  { on = "<C-y>",    run = "yank --url",              desc = "Copy path" },]
+[[mgr.prepend_keymap]]
+on  = "y"
+run = [
+  "shell -- echo %s | xclip -i -selection clipboard",
+  "yank"
+]
+desc = "Yank + copy path to clipboard"
