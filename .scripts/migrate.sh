@@ -5,7 +5,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=11
+STEP_TOTAL=17
 
 phase_header "Migration: Clean up for stow"
 
@@ -44,13 +44,19 @@ _remove_symlink "$HOME/.config/polybar/polybar" "polybar tangle artifact"
 _backup_real "$HOME/.config/yazi"    "yazi dir"
 _backup_real "$HOME/.config/polybar" "polybar dir"
 
-# Remove all file-level symlinks managed by the old link.sh
-_remove_symlink "$HOME/.zshrc"                   ".zshrc"
-_remove_symlink "$HOME/.gitconfig"               ".gitconfig"
-_remove_symlink "$HOME/.config/kitty/kitty.conf" "kitty.conf"
-_remove_symlink "$HOME/.config/kitty/colors.conf" "kitty colors.conf"
-_remove_symlink "$HOME/.config/i3/config"        "i3 config"
-_remove_symlink "$HOME/.config/starship.toml"    "starship.toml"
+# Remove old link.sh symlinks, then back up any real file left in stow's way
+# (fresh installs ship a real ~/.zshrc etc., not a symlink)
+for pair in \
+  "$HOME/.zshrc:.zshrc" \
+  "$HOME/.gitconfig:.gitconfig" \
+  "$HOME/.config/kitty/kitty.conf:kitty.conf" \
+  "$HOME/.config/kitty/colors.conf:kitty colors.conf" \
+  "$HOME/.config/i3/config:i3 config" \
+  "$HOME/.config/starship.toml:starship.toml"; do
+  dst="${pair%%:*}" label="${pair#*:}"
+  _remove_symlink "$dst" "$label"
+  _backup_real "$dst" "$label"
+done
 
 # Remove empty dirs so stow can fold them into clean symlinks
 step_start "clean empty dirs"
