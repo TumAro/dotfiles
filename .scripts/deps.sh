@@ -68,10 +68,12 @@ if command -v yazi &>/dev/null; then
   step_skip
 else
   YAZI_VER=$(gh_tag sxyazi/yazi)
+  # musl build is statically linked — avoids glibc-version mismatches the gnu .deb hits on older distros
+  YAZI_ARCH="${RUST_ARCH/-gnu*/-musl}"
   if [[ -z "$YAZI_VER" ]]; then
     step_fail "gh_tag lookup failed (rate-limited or offline)"
   elif wget -qO /tmp/yazi.deb \
-       "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-${RUST_ARCH}.deb" \
+       "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-${YAZI_ARCH}.deb" \
        >> "$LOG_FILE" 2>&1 && \
      sudo apt install -f /tmp/yazi.deb -y >> "$LOG_FILE" 2>&1; then
     step_done
@@ -195,7 +197,7 @@ else
     if wget -qO /tmp/eza.tar.gz \
          "https://github.com/eza-community/eza/releases/download/${EZA_VER}/eza_${RUST_ARCH}.tar.gz" \
          >> "$LOG_FILE" 2>&1 && \
-       tar -xzf /tmp/eza.tar.gz -C ~/.local/bin/ eza >> "$LOG_FILE" 2>&1; then
+       tar -xzf /tmp/eza.tar.gz -C ~/.local/bin/ ./eza >> "$LOG_FILE" 2>&1; then
       step_done
     else
       step_fail
