@@ -5,7 +5,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=12
+STEP_TOTAL=11
 
 phase_header "Migration: Clean up for stow"
 

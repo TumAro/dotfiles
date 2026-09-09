@@ -24,6 +24,11 @@ log() {
   printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*" >> "$LOG_FILE"
 }
 
+# Latest release tag for a github repo, e.g. gh_tag sxyazi/yazi
+gh_tag() {
+  curl -s "https://api.github.com/repos/$1/releases/latest" | grep '"tag_name"' | cut -d'"' -f4
+}
+
 step_start() {
   _STEP_NAME="$1"
   STEP_N=$(( STEP_N + 1 ))

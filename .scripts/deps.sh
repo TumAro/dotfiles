@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=13
+STEP_TOTAL=14
 
 # ── Architecture detection ─────────────────────────────────────
 _ARCH="$(uname -m)"
@@ -67,8 +67,7 @@ step_start "yazi"
 if command -v yazi &>/dev/null; then
   step_skip
 else
-  YAZI_VER=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest \
-    | grep '"tag_name"' | cut -d'"' -f4)
+  YAZI_VER=$(gh_tag sxyazi/yazi)
   if wget -qO /tmp/yazi.deb \
        "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-${RUST_ARCH}.deb" \
        >> "$LOG_FILE" 2>&1 && \
@@ -116,23 +115,27 @@ else
   fi
 fi
 
-# ── JetBrainsMono Nerd Font ───────────────────────────────────
-step_start "JetBrainsMono font"
-if [[ -d ~/.local/share/fonts/JetBrainsMono ]]; then
-  step_skip
-else
+# ── Nerd Fonts (JetBrainsMono, Iosevka) ────────────────────────
+_nerdfont() {
+  local name="$1"
+  step_start "$name font"
+  if [[ -d ~/.local/share/fonts/$name ]]; then
+    step_skip
+    return
+  fi
   mkdir -p ~/.local/share/fonts
-  if wget -qO /tmp/JetBrainsMono.zip \
-       https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip \
+  if wget -qO "/tmp/$name.zip" \
+       "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${name}.zip" \
        >> "$LOG_FILE" 2>&1 && \
-     unzip -o /tmp/JetBrainsMono.zip -d ~/.local/share/fonts/JetBrainsMono/ '*.ttf' \
+     unzip -o "/tmp/$name.zip" -d "$HOME/.local/share/fonts/$name/" '*.ttf' \
        >> "$LOG_FILE" 2>&1; then
     fc-cache -fv ~/.local/share/fonts >> "$LOG_FILE" 2>&1 || true
     step_done
   else
     step_fail
   fi
-fi
+}
+for _f in JetBrainsMono Iosevka; do _nerdfont "$_f"; done
 
 # ── local dotfiles fonts ──────────────────────────────────────
 step_start "local fonts"
@@ -184,8 +187,7 @@ else
       step_fail
     fi
   else
-    EZA_VER=$(curl -s https://api.github.com/repos/eza-community/eza/releases/latest \
-      | grep '"tag_name"' | cut -d'"' -f4)
+    EZA_VER=$(gh_tag eza-community/eza)
     if wget -qO /tmp/eza.tar.gz \
          "https://github.com/eza-community/eza/releases/download/${EZA_VER}/eza_${RUST_ARCH}.tar.gz" \
          >> "$LOG_FILE" 2>&1 && \
@@ -209,8 +211,7 @@ else
       step_fail
     fi
   else
-    HX_VER=$(curl -s https://api.github.com/repos/helix-editor/helix/releases/latest \
-      | grep '"tag_name"' | cut -d'"' -f4)
+    HX_VER=$(gh_tag helix-editor/helix)
     case "$_ARCH" in
       x86_64)        HX_ARCH="x86_64" ;;
       aarch64|arm64) HX_ARCH="aarch64" ;;

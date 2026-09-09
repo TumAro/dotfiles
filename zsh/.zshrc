@@ -63,7 +63,7 @@ alias la='eza -lag --icons=always'
 alias lt='eza -lT --icons=always --level=2'
 
 # bat — better cat
-alias cat='bat --pager=never'
+alias cat='bat --style=plain --paging=never'
 
 # fd — binary name differs across distros
 command -v fdfind &>/dev/null && alias find='fdfind' || command -v fd &>/dev/null && alias find='fd' || true
@@ -122,3 +122,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # ── Machine-local overrides (secrets, machine-specific aliases) ───────────────
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+alias buds='bt-buds'
+
+# bun completions
+[ -s "/home/tumaro/.bun/_bun" ] && source "/home/tumaro/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

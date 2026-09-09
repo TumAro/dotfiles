@@ -115,4 +115,6 @@ bindsym $mod+e exec ~/.local/kitty.app/bin/kitty -e yazi
 # ── Appearance ────────────────────────────────────────────────────────────────
 default_border pixel 2
 default_floating_border pixel 2
-hide_edge_borders smartbindsym $mod+Tab exec rofi -show window
+hide_edge_borders smart
+bindsym $mod+Tab exec rofi -show window
+bindsym $mod+b exec bt-buds

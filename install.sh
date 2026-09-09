@@ -60,7 +60,7 @@ if bash "$DOTFILES/.scripts/verify.sh"; then
 fi
 
 # ── Cleanup temp files ────────────────────────────────────────
-rm -f /tmp/delta.deb /tmp/yazi.deb /tmp/JetBrainsMono.zip /tmp/vesktop.deb /tmp/eza.tar.gz /tmp/helix.tar.xz
+rm -f /tmp/delta.deb /tmp/yazi.deb /tmp/*.zip /tmp/vesktop.deb /tmp/eza.tar.gz /tmp/helix.tar.xz
 rm -rf /tmp/helix-*-linux 2>/dev/null || true
 log "Cleanup done"
 

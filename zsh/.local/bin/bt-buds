@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+MAC="B0:38:E2:A0:E3:1F"
+bluetoothctl connect "$MAC"
+sleep 3
+pactl set-card-profile "bluez_card.${MAC//:/_}" headset-head-unit
+sleep 1
+pactl set-default-sink "bluez_output.${MAC//:/_}.1"
