@@ -68,7 +68,9 @@ if command -v yazi &>/dev/null; then
   step_skip
 else
   YAZI_VER=$(gh_tag sxyazi/yazi)
-  if wget -qO /tmp/yazi.deb \
+  if [[ -z "$YAZI_VER" ]]; then
+    step_fail "gh_tag lookup failed (rate-limited or offline)"
+  elif wget -qO /tmp/yazi.deb \
        "https://github.com/sxyazi/yazi/releases/download/${YAZI_VER}/yazi-${RUST_ARCH}.deb" \
        >> "$LOG_FILE" 2>&1 && \
      sudo apt install -f /tmp/yazi.deb -y >> "$LOG_FILE" 2>&1; then
@@ -107,7 +109,7 @@ step_start "zinit"
 if [[ -d ~/.local/share/zinit/zinit.git ]]; then
   step_skip
 else
-  if bash -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)" \
+  if NO_INPUT=1 NO_EDIT=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)" \
        >> "$LOG_FILE" 2>&1; then
     step_done
   else
@@ -148,7 +150,9 @@ fi
 
 # ── vesktop ───────────────────────────────────────────────────
 step_start "vesktop"
-if command -v vesktop &>/dev/null; then
+if [[ -n "${SKIP_VESKTOP:-}" ]]; then
+  step_skip
+elif command -v vesktop &>/dev/null; then
   step_skip
 else
   VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/latest \
