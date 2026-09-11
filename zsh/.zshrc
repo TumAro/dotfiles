@@ -37,6 +37,7 @@ bindkey '^n' history-search-forward
 
 # ── Tools ─────────────────────────────────────────────────────────────────────
 eval "$(starship init zsh)"
+unalias zi 2>/dev/null  # zinit's `zi` alias breaks zoxide's `zi()` function def below
 eval "$(zoxide init zsh)"
 
 # ── Aliases ───────────────────────────────────────────────────────────────────
@@ -50,6 +51,9 @@ function y() {
   fi
   rm -f -- "$tmp"
 }
+
+# Run a command on the nvidia dGPU (prime on-demand offload)
+alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only'
 
 # Navigation
 alias ..='cd ..'
