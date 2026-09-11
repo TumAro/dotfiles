@@ -5,6 +5,7 @@ set $mod Mod4
 font pango:JetBrainsMonoNL Nerd Font 10
 
 # ── Startup ───────────────────────────────────────────────────────────────────
+exec_always --no-startup-id xsetroot -solid '#34495e'
 exec --no-startup-id picom --daemon
 exec --no-startup-id nm-applet
 exec --no-startup-id udiskie --tray
@@ -99,9 +100,13 @@ bindsym $mod+Escape exec ~/.config/polybar/forest/scripts/powermenu.sh
 bindsym $mod+l exec i3lock -c 212B30
 
 # ── Volume ────────────────────────────────────────────────────────────────────
-bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
-bindsym XF86AudioLowerVolume exec amixer set Master 5%-
-bindsym XF86AudioMute        exec amixer set Master toggle
+bindsym XF86AudioRaiseVolume exec ~/.config/i3/scripts/volctl.sh up
+bindsym XF86AudioLowerVolume exec ~/.config/i3/scripts/volctl.sh down
+bindsym XF86AudioMute        exec ~/.config/i3/scripts/volctl.sh mute
+
+# ── Brightness ───────────────────────────────────────────────────────────────
+bindsym XF86MonBrightnessUp   exec ~/.config/i3/scripts/brightctl.sh up
+bindsym XF86MonBrightnessDown exec ~/.config/i3/scripts/brightctl.sh down
 
 # ── Screenshot ────────────────────────────────────────────────────────────────
 bindsym Print             exec maim -s | xclip -selection clipboard -t image/png
