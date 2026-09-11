@@ -109,7 +109,7 @@ alias peek='peek -b ffmpeg'
 alias ssh='TERM=xterm-256color ssh'
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/gems/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/gems/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 [[ -n "${OPENCODE_PATH:-}" ]] && export PATH="$OPENCODE_PATH:$PATH"
 
