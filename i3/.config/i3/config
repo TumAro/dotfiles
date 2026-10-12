@@ -6,7 +6,7 @@ font pango:JetBrainsMonoNL Nerd Font 10
 
 # ── Startup ───────────────────────────────────────────────────────────────────
 exec_always --no-startup-id xsetroot -solid '#0a0e14'
-exec --no-startup-id picom --daemon
+exec --no-startup-id picom --daemon --experimental-backends
 exec --no-startup-id udiskie --tray
 exec --no-startup-id redshift -O 3500
 exec --no-startup-id touchegg
