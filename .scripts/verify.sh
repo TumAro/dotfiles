@@ -37,7 +37,20 @@ _check "yazi"          "$DOTFILES/yazi/.config/yazi"              "$HOME/.config
 _check "polybar"       "$DOTFILES/polybar/.config/polybar"        "$HOME/.config/polybar"
 _check "starship.toml" "$DOTFILES/starship/.config/starship.toml" "$HOME/.config/starship.toml"
 _check "helix config" "$DOTFILES/helix/.config/helix/config.toml" "$HOME/.config/helix/config.toml"
+_check "helix languages" "$DOTFILES/helix/.config/helix/languages.toml" "$HOME/.config/helix/languages.toml"
+_check "vesktop theme" "$DOTFILES/vesktop/.config/vesktop/themes/minimal.styles.css" "$HOME/.config/vesktop/themes/minimal.styles.css"
 _check "zellij"        "$DOTFILES/zellij/.config/zellij"          "$HOME/.config/zellij"
+
+# tools that deps.sh installs outside stow
+for _t in tdx zellij uv; do
+  if command -v "$_t" &>/dev/null || [[ -x "$HOME/.local/bin/$_t" || -x "$HOME/.cargo/bin/$_t" ]]; then
+    _PASS=$(( _PASS + 1 ))
+  else
+    printf "  ${_R}MISSING${_X} command %s\n" "$_t"
+    log "VERIFY MISSING command $_t"
+    _FAIL=$(( _FAIL + 1 ))
+  fi
+done
 
 printf "\n  ${_G}%d ok${_X}  ${_R}%d fail${_X}\n\n" "$_PASS" "$_FAIL"
 log "VERIFY summary: $_PASS ok, $_FAIL fail"
