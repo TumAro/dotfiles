@@ -124,7 +124,6 @@ bindsym $mod+e exec ~/.local/kitty.app/bin/kitty -e yazi
 default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
-bindsym $mod+Tab exec rofi -show window
 bindsym $mod+b exec bt-buds
 
 # ── Ayu Dark window colours ───────────────────────────────────────────────────
