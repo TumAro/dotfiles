@@ -37,6 +37,7 @@ _check "yazi"          "$DOTFILES/yazi/.config/yazi"              "$HOME/.config
 _check "polybar"       "$DOTFILES/polybar/.config/polybar"        "$HOME/.config/polybar"
 _check "starship.toml" "$DOTFILES/starship/.config/starship.toml" "$HOME/.config/starship.toml"
 _check "helix config" "$DOTFILES/helix/.config/helix/config.toml" "$HOME/.config/helix/config.toml"
+_check "zellij"        "$DOTFILES/zellij/.config/zellij"          "$HOME/.config/zellij"
 
 printf "\n  ${_G}%d ok${_X}  ${_R}%d fail${_X}\n\n" "$_PASS" "$_FAIL"
 log "VERIFY summary: $_PASS ok, $_FAIL fail"

@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=14
+STEP_TOTAL=24
 
 # ── Architecture detection ─────────────────────────────────────
 _ARCH="$(uname -m)"
@@ -236,6 +236,64 @@ else
     else
       step_fail
     fi
+  fi
+fi
+
+# ── rust (rustup, minimal profile; PATH is set in .zshrc) ─────
+step_start "rustup"
+if [[ -x ~/.cargo/bin/cargo ]]; then
+  step_skip
+else
+  if curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --no-modify-path >> "$LOG_FILE" 2>&1; then
+    step_done
+  else
+    step_fail
+  fi
+fi
+
+# ── cargo tools (source builds; each takes minutes) ───────────
+_cargo_tool() {
+  local bin="$1"; shift
+  step_start "$bin"
+  if [[ -x ~/.cargo/bin/$bin ]]; then
+    step_skip
+  elif ~/.cargo/bin/cargo install --locked "$@" >> "$LOG_FILE" 2>&1; then
+    step_done
+  else
+    step_fail
+  fi
+}
+_cargo_tool zellij zellij
+_cargo_tool harper-ls harper-ls
+# vendor-openssl: no libssl-dev (needs sudo) required
+_cargo_tool typst typst-cli --features vendor-openssl
+_cargo_tool tinymist --git https://github.com/Myriad-Dreamin/tinymist tinymist-cli
+
+# ── python tools via uv ───────────────────────────────────────
+for _t in ruff basedpyright; do
+  step_start "$_t"
+  if command -v "$_t" &>/dev/null; then
+    step_skip
+  elif command -v uv &>/dev/null && uv tool install "$_t" >> "$LOG_FILE" 2>&1; then
+    step_done
+  else
+    step_fail "uv missing or install failed"
+  fi
+done
+
+# ── tdx (terminal todo; pinned release binary) ────────────────
+# v0.14.0 publishes no checksums and gh here has no `attestation`; fetched over HTTPS only.
+step_start "tdx"
+if command -v tdx &>/dev/null; then
+  step_skip
+else
+  mkdir -p ~/.local/bin
+  if wget -qO ~/.local/bin/tdx \
+       "https://github.com/niklas-heer/tdx/releases/download/v0.14.0/tdx-linux-${DEB_ARCH}" \
+       >> "$LOG_FILE" 2>&1 && chmod +x ~/.local/bin/tdx; then
+    step_done
+  else
+    step_fail
   fi
 fi
 

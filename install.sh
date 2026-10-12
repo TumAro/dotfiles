@@ -24,7 +24,7 @@ bash "$DOTFILES/.scripts/migrate.sh"
 
 # ── Stow all packages ─────────────────────────────────────────
 phase_header "Phase 2: Stow"
-PKGS=(zsh git kitty i3 yazi polybar starship helix)
+PKGS=(zsh git kitty i3 yazi polybar starship helix zellij vesktop)
 STEP_TOTAL=${#PKGS[@]}
 for pkg in "${PKGS[@]}"; do
   step_start "$pkg"
