@@ -15,7 +15,9 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
-bindsym $mod+Return exec $term
+# Terminal opens straight into zellij (attach to session "main", create if missing)
+bindsym $mod+Return exec $term -e ~/.cargo/bin/zellij attach --create main
+bindsym $mod+shift+Return exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
 bindsym $mod+space exec ~/.config/polybar/forest/scripts/launcher.sh
@@ -138,4 +140,4 @@ client.urgent           #ff3333  #0a0e14  #ff3333  #ff3333   #ff3333
 client.background       #0a0e14
 
 # ── Browser: focus Zen if running, otherwise launch it ────────────────────────
-bindsym $mod+z exec --no-startup-id sh -c '[ "$(i3-msg "[class=\"(?i)^zen\"] focus" | grep -c true)" -gt 0 ] || zen'
+bindsym $mod+z exec --no-startup-id sh -c '[ "$(i3-msg "[class=\"(?i)^zen\"] focus" | grep -c true)" -gt 0 ] || $HOME/.local/bin/zen'
