@@ -24,6 +24,8 @@ show_release_notes false
 keybinds {
     shared_except "locked" {
         bind "Alt t" { Run "tdx" { floating true; close_on_exit true; }; }
+        bind "Alt s" { NewPane "Right"; }
+        bind "Alt d" { NewPane "Down"; }
         bind "Alt y" { Run "yazi" { floating true; close_on_exit true; }; }
     }
 }
