@@ -8,8 +8,8 @@ layout {
     }
     tab name="work" {
         pane split_direction="vertical" {
-            pane size="38%" split_direction="horizontal" {
-                pane size="65%" name="claude" command="claude"
+            pane size="30%" split_direction="horizontal" {
+                pane size="70%" name="claude" command="claude"
                 pane name="shell"
             }
             pane name="helix" command="hx" {
