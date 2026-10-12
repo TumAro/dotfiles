@@ -15,10 +15,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
-# Terminal opens straight into zellij (attach to session "main", create if missing).
-# Via zsh -i so zellij and its panes get the PATH from .zshrc (i3 itself has no ~/.local/bin).
-bindsym $mod+t exec $term -e zsh -ic 'exec zellij attach --create main'
-bindsym $mod+shift+t exec $term
+# Plain terminal. Zellij only on purpose: cd into a repo and run `ws`.
+bindsym $mod+t exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
 bindsym $mod+space exec ~/.config/polybar/forest/scripts/launcher.sh

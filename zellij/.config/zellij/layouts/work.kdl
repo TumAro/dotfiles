@@ -1,4 +1,4 @@
-// global default (default_layout in config.kdl); a repo can override with .zellij/work.kdl via ws
+// used by `ws`; a repo can override with its own .zellij/work.kdl
 layout {
     default_tab_template {
         children
