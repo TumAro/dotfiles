@@ -1,0 +1,20 @@
+// global default; a repo can override with .zellij/work.kdl (see ws in .zshrc)
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="compact-bar"
+        }
+        children
+    }
+    tab name="work" {
+        pane split_direction="vertical" {
+            pane size="38%" split_direction="horizontal" {
+                pane size="65%" name="claude" command="claude"
+                pane name="shell"
+            }
+            pane name="helix" command="hx" {
+                args "."
+            }
+        }
+    }
+}
