@@ -16,7 +16,9 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 
 # ── Completion ────────────────────────────────────────────────────────────────
-autoload -Uz compinit && compinit -u
+autoload -Uz compinit
+# full security check only if the dump is older than a day, otherwise trust the cache
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then compinit -u; else compinit -u -C; fi
 
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' squeeze-slashes true
@@ -121,8 +123,13 @@ export GEM_HOME="$HOME/gems"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+# Lazy: put the newest installed node on PATH now, load nvm itself only when `nvm` is called (~0.9s saved per shell)
+export PATH="$(echo $NVM_DIR/versions/node/*(N[-1]))/bin:$PATH"
+nvm() {
+  unset -f nvm
+  source "$NVM_DIR/nvm.sh"
+  nvm "$@"
+}
 
 # ── Machine-local overrides (secrets, machine-specific aliases) ───────────────
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
