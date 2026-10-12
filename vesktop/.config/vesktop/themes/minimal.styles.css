@@ -1,0 +1,128 @@
+
+:root {
+  --font-primary: "JetBrainsMono", monospace;
+  --ayu-bg0: #0a0e14;
+  --ayu-bg1: #0f131a;
+  --ayu-bg2: #151a22;
+  --ayu-bg3: #1c222c;
+  --ayu-bg4: #252c38;
+  --ayu-bg5: #2d3542;
+  --ayu-bg-visual-yellow: #2a2a24;
+  --ayu-fg: #b3b1ad;
+  --ayu-grey0: #4d5566;
+  --ayu-grey1: #6c7380;
+  --ayu-grey2: #8a919e;
+  --ayu-red: #ff3333;
+  --ayu-orange: #ff8f40;
+  --ayu-yellow: #e6b450;
+  --ayu-green: #c2d94c;
+  --ayu-aqua: #95e6cb;
+  --ayu-blue: #59c2ff;
+  --ayu-purple: #d2a6ff;
+
+  --background-primary: rgba(10, 14, 20, 0.72) !important;
+  --background-secondary: rgba(15, 19, 26, 0.62) !important;
+  --background-secondary-alt: rgba(21, 26, 34, 0.58) !important;
+  --background-tertiary: rgba(10, 14, 20, 0.78) !important;
+  --background-floating: rgba(15, 19, 26, 0.86) !important;
+  --background-base-lowest: rgba(10, 14, 20, 0.72) !important;
+  --background-base-low: rgba(15, 19, 26, 0.64) !important;
+  --background-base-lower: rgba(15, 19, 26, 0.68) !important;
+  --background-base-medium: rgba(21, 26, 34, 0.72) !important;
+  --background-base-high: rgba(28, 34, 44, 0.80) !important;
+  --background-surface-high: rgba(28, 34, 44, 0.80) !important;
+  --background-surface-higher: rgba(37, 44, 56, 0.84) !important;
+  --bg-base-primary: rgba(10, 14, 20, 0.72) !important;
+  --bg-base-secondary: rgba(15, 19, 26, 0.64) !important;
+  --bg-base-tertiary: rgba(10, 14, 20, 0.78) !important;
+  --bg-surface-overlay: rgba(15, 19, 26, 0.86) !important;
+  --text-normal: var(--ayu-fg) !important;
+  --text-muted: var(--ayu-grey1) !important;
+  --text-link: var(--ayu-blue) !important;
+  --interactive-normal: var(--ayu-grey2) !important;
+  --interactive-hover: var(--ayu-fg) !important;
+  --interactive-active: var(--ayu-yellow) !important;
+  --brand-500: var(--ayu-yellow) !important;
+  --brand-560: var(--ayu-aqua) !important;
+  --status-danger: var(--ayu-red) !important;
+  --status-warning: var(--ayu-yellow) !important;
+  --status-positive: var(--ayu-green) !important;
+}
+
+body,
+#app-mount,
+[class*="appMount"],
+[class*="app_"],
+[class*="bg_"] {
+  background: transparent !important;
+}
+
+[class*="layer_"],
+[class*="base_"],
+[class*="content_"],
+[class*="chat_"],
+[class*="container_"],
+[class*="sidebar_"],
+[class*="panels_"],
+[class*="members_"],
+[class*="member_"],
+[class*="channelTextArea_"],
+[class*="scrollableContainer_"],
+[class*="themed_"] {
+  background-color: transparent !important;
+}
+
+[class*="message_"]:hover,
+[class*="selected_"],
+[class*="modeSelected_"],
+[class*="interactiveSelected_"] {
+  background-color: rgba(230, 180, 80, 0.38) !important;
+}
+
+[class*="mentioned_"] {
+  background-color: rgba(230, 180, 80, 0.12) !important;
+}
+
+[class*="replying_"] {
+  background-color: rgba(194, 217, 76, 0.12) !important;
+}
+
+[class*="markup_"] a {
+  color: var(--ayu-blue) !important;
+}
+
+[class*="botTag_"],
+[class*="numberBadge_"] {
+  background-color: var(--ayu-green) !important;
+  color: var(--ayu-bg0) !important;
+}
+
+/* /* Hide server list (command k is your friend) */ */
+/* nav[class*="guilds"] { */
+/*   display: none !important; */
+/* } */
+
+/* Hide help button */
+[class*="toolbar"] button[aria-label="Help"] {
+  display: none !important;
+}
+
+/* Hide the help button that links to support.discord.com */
+a[href="https://support.discord.com"] {
+  display: none !important;
+}
+
+/* Hide invite button in server header––this will probably break at some point */
+header span:nth-child(2) > div {
+  display: none !important;
+}
+
+/* Hide only the boost badge next to server name */
+[class*="guildBadgeAndName"] > div {
+  display: none !important;
+}
+
+/* Hide any button inside the gift form buttons container––this will also break at some point */
+.scrollableContainer__74017 .buttons__74017 > div.button__74017 {
+  display: none !important;
+}
