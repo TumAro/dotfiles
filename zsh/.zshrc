@@ -106,8 +106,15 @@ alias ei3='hx ~/dotfiles/i3/.config/i3/config'
 alias ekitty='hx ~/dotfiles/kitty/.config/kitty/kitty.conf'
 alias ehx='hx ~/dotfiles/helix/.config/helix/config.toml'
 
-# Workspace: repo's .zellij/work.kdl if present, else the global "work" layout
-ws() { if [[ -f .zellij/work.kdl ]]; then zellij --layout .zellij/work.kdl; else zellij --layout work; fi }
+# Workspace: one zellij session per repo, named after it. Run again to resume it.
+# Layout: repo's .zellij/work.kdl if present, else the global "work" layout.
+ws() {
+  [[ -n "$ZELLIJ" ]] && { echo "already inside zellij"; return 1; }
+  local root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+  local layout=work
+  [[ -f $root/.zellij/work.kdl ]] && layout=$root/.zellij/work.kdl
+  (cd "$root" && zellij attach --create "${root:t}" options --default-layout "$layout")
+}
 
 # Misc
 alias peek='peek -b ffmpeg'
