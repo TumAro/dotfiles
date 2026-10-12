@@ -21,9 +21,6 @@ bindsym $mod+t exec $term
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
 bindsym $mod+space exec ~/.config/polybar/forest/scripts/launcher.sh
 
-# ── App switcher (rofi) ───────────────────────────────────────────────────────
-bindsym Mod1+Tab exec --no-startup-id rofi -no-config -show window -theme ~/.config/polybar/forest/scripts/rofi/launcher.rasi
-
 # ── Window management ─────────────────────────────────────────────────────────
 bindsym Mod1+F4      kill
 bindsym $mod+F11     fullscreen toggle
