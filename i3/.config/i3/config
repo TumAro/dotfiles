@@ -136,3 +136,6 @@ client.focused_inactive #1c222c  #0a0e14  #6c7380  #1c222c   #1c222c
 client.unfocused        #1c222c  #0a0e14  #4d5566  #1c222c   #1c222c
 client.urgent           #ff3333  #0a0e14  #ff3333  #ff3333   #ff3333
 client.background       #0a0e14
+
+# ── Browser: focus Zen if running, otherwise launch it ────────────────────────
+bindsym $mod+z exec --no-startup-id sh -c '[ "$(i3-msg "[class=\"(?i)^zen\"] focus" | grep -c true)" -gt 0 ] || zen'
