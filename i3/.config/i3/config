@@ -16,8 +16,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 # ── Terminal ──────────────────────────────────────────────────────────────────
 set $term ~/.local/kitty.app/bin/kitty
 # Terminal opens straight into zellij (attach to session "main", create if missing)
-bindsym $mod+Return exec $term -e ~/.cargo/bin/zellij attach --create main
-bindsym $mod+shift+Return exec $term
+bindsym $mod+t exec $term -e ~/.cargo/bin/zellij attach --create main
+bindsym $mod+shift+t exec $term
 
 # ── App launcher (rofi) ───────────────────────────────────────────────────────
 bindsym $mod+space exec ~/.config/polybar/forest/scripts/launcher.sh
