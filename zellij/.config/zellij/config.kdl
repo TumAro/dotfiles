@@ -25,8 +25,8 @@ show_release_notes false
 
 keybinds {
     shared_except "locked" {
-        bind "Alt t" { Run "tdx" { floating true; close_on_exit true; }; }
-        bind "Alt w" { NewTab; }
+        bind "Alt m" { Run "tdx" { floating true; close_on_exit true; }; }
+        bind "Alt t" { NewTab; }
         bind "Alt q" { Detach; }
         bind "Alt s" { NewPane "Right"; }
         bind "Alt d" { NewPane "Down"; }
