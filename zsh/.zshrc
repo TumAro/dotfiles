@@ -71,11 +71,8 @@ alias lt='eza -lT --icons=always --level=2'
 # bat — better cat
 alias cat='bat --style=plain --paging=never'
 
-# fd — binary name differs across distros
-command -v fdfind &>/dev/null && alias find='fdfind' || command -v fd &>/dev/null && alias find='fd' || true
-
-# ripgrep — better grep
-alias grep='rg'
+# fd — Debian/Ubuntu name the binary fdfind; `fd` alias only, `find` stays the real find
+(( $+commands[fdfind] && ! $+commands[fd] )) && alias fd=fdfind
 
 # Editor
 alias v='hx'
@@ -119,39 +116,41 @@ ws() {
 # Misc
 alias peek='peek -b ffmpeg'
 alias ssh='TERM=xterm-256color ssh'
+alias buds='bt-buds'
 
-# ── PATH ──────────────────────────────────────────────────────────────────────
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/gems/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-[[ -n "${OPENCODE_PATH:-}" ]] && export PATH="$OPENCODE_PATH:$PATH"
-
+# ── Environment ───────────────────────────────────────────────────────────────
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-
-# Ruby gems
 export GEM_HOME="$HOME/gems"
-
-# NVM
+export BUN_INSTALL="$HOME/.bun"
 export NVM_DIR="$HOME/.nvm"
-# Lazy: put the newest installed node on PATH now, load nvm itself only when `nvm` is called (~0.9s saved per shell)
-export PATH="$(echo $NVM_DIR/versions/node/*(N[-1]))/bin:$PATH"
+
+# ── PATH (one block; typeset -U drops duplicates) ─────────────────────────────
+typeset -U path
+_node=($NVM_DIR/versions/node/*(N[-1]))   # newest installed node; nvm itself is lazy
+path=(
+  $HOME/bin
+  $HOME/.local/bin
+  $HOME/.cargo/bin
+  $HOME/gems/bin
+  $BUN_INSTALL/bin
+  $HOME/.opencode/bin
+  /usr/local/bin
+  ${OPENCODE_PATH:+$OPENCODE_PATH}
+  ${_node:+$_node/bin}
+  $path
+)
+unset _node
+
+# nvm: only load it when `nvm` is called (saves ~0.9s per shell)
 nvm() {
   unset -f nvm
   source "$NVM_DIR/nvm.sh"
   nvm "$@"
 }
 
-# ── Machine-local overrides (secrets, machine-specific aliases) ───────────────
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-alias buds='bt-buds'
-
 # bun completions
-[ -s "/home/tumaro/.bun/_bun" ] && source "/home/tumaro/.bun/_bun"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
-
-# opencode
-export PATH=/home/tumaro/.opencode/bin:$PATH
+# ── Machine-local overrides (secrets, machine-specific aliases): keep LAST ────
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
