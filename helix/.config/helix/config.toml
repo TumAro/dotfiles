@@ -12,6 +12,12 @@ lsp.display-inlay-hints = false
 
 auto-pairs = true
 
+bufferline = "multiple"
+idle-timeout = 400
+
+[editor.soft-wrap]
+enable = true
+
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"

@@ -106,6 +106,9 @@ alias ei3='hx ~/dotfiles/i3/.config/i3/config'
 alias ekitty='hx ~/dotfiles/kitty/.config/kitty/kitty.conf'
 alias ehx='hx ~/dotfiles/helix/.config/helix/config.toml'
 
+# Workspace: repo layout if present, else plain zellij
+ws() { if [[ -f .zellij/work.kdl ]]; then zellij --layout .zellij/work.kdl; else zellij; fi }
+
 # Misc
 alias peek='peek -b ffmpeg'
 alias ssh='TERM=xterm-256color ssh'
