@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=24
+STEP_TOTAL=23
 
 # ── Architecture detection ─────────────────────────────────────
 _ARCH="$(uname -m)"
@@ -129,7 +129,7 @@ _nerdfont() {
   fi
   mkdir -p ~/.local/share/fonts
   if wget -qO "/tmp/$name.zip" \
-       "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${name}.zip" \
+       "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/${name}.zip" \
        >> "$LOG_FILE" 2>&1 && \
      unzip -o "/tmp/$name.zip" -d "$HOME/.local/share/fonts/$name/" '*.ttf' \
        >> "$LOG_FILE" 2>&1; then
@@ -157,8 +157,7 @@ if [[ -n "${SKIP_VESKTOP:-}" ]]; then
 elif command -v vesktop &>/dev/null; then
   step_skip
 else
-  VESKTOP_URL=$(curl -s https://api.github.com/repos/Vencord/Vesktop/releases/latest \
-    | grep "browser_download_url.*${DEB_ARCH}\.deb" | cut -d'"' -f4)
+  VESKTOP_URL="https://github.com/Vencord/Vesktop/releases/download/v1.6.7/vesktop_1.6.7_${DEB_ARCH}.deb"
   if wget -qO /tmp/vesktop.deb "$VESKTOP_URL" >> "$LOG_FILE" 2>&1 && \
      sudo dpkg -i /tmp/vesktop.deb >> "$LOG_FILE" 2>&1; then
     step_done
@@ -267,7 +266,28 @@ _cargo_tool zellij zellij
 _cargo_tool harper-ls harper-ls
 # vendor-openssl: no libssl-dev (needs sudo) required
 _cargo_tool typst typst-cli --features vendor-openssl
-_cargo_tool tinymist --git https://github.com/Myriad-Dreamin/tinymist tinymist-cli
+_cargo_tool tinymist --git https://github.com/Myriad-Dreamin/tinymist --rev 8e845ebd tinymist-cli
+
+# ── uv (pinned release, sha256 checked against the release's .sha256 asset) ──
+step_start "uv"
+if command -v uv &>/dev/null; then
+  step_skip
+else
+  UV_VER=0.13.0
+  UV_TAR="uv-${RUST_ARCH}.tar.gz"
+  UV_URL="https://github.com/astral-sh/uv/releases/download/${UV_VER}"
+  mkdir -p ~/.local/bin /tmp/uv-dl
+  if wget -qO "/tmp/uv-dl/$UV_TAR" "$UV_URL/$UV_TAR" >> "$LOG_FILE" 2>&1 && \
+     wget -qO "/tmp/uv-dl/$UV_TAR.sha256" "$UV_URL/$UV_TAR.sha256" >> "$LOG_FILE" 2>&1 && \
+     (cd /tmp/uv-dl && sha256sum -c "$UV_TAR.sha256") >> "$LOG_FILE" 2>&1 && \
+     tar -xzf "/tmp/uv-dl/$UV_TAR" -C /tmp/uv-dl >> "$LOG_FILE" 2>&1 && \
+     install -m755 "/tmp/uv-dl/uv-${RUST_ARCH}/uv" "/tmp/uv-dl/uv-${RUST_ARCH}/uvx" ~/.local/bin/ >> "$LOG_FILE" 2>&1; then
+    step_done
+  else
+    step_fail
+  fi
+  rm -rf /tmp/uv-dl
+fi
 
 # ── python tools via uv ───────────────────────────────────────
 for _t in ruff basedpyright; do
