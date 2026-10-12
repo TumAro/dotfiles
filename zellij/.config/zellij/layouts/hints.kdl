@@ -1,0 +1,12 @@
+// plain zellij: tabs + key hints for the current mode, both at the bottom
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="tab-bar"
+        }
+        pane size=2 borderless=true {
+            plugin location="status-bar"
+        }
+    }
+}
