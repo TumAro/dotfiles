@@ -52,8 +52,8 @@ function y() {
   rm -f -- "$tmp"
 }
 
-# Run a command on the nvidia dGPU (prime on-demand offload)
-alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only'
+# Steam client stays on iGPU (~/.local/bin/steam). Per game, set launch option: prime-run %command%
+alias steam-show='steam steam://open/main'
 
 # Navigation
 alias ..='cd ..'
@@ -134,3 +134,7 @@ alias buds='bt-buds'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+
+# opencode
+export PATH=/home/tumaro/.opencode/bin:$PATH

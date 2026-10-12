@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run command on NVIDIA dGPU (PRIME on-demand). Real script so Steam launch options can use it too.
+export __NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only
+exec "$@"

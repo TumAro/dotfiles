@@ -1,0 +1,5 @@
+#!/bin/sh
+# Steam on iGPU, light flags. Works from rofi/.desktop too (/usr/games isn't in i3's PATH).
+# No args: start silent (no window). Show window: steam steam://open/main
+[ $# -eq 0 ] && set -- -silent
+exec /usr/games/steam -cef-disable-gpu -no-cef-sandbox "$@"

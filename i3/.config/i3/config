@@ -98,7 +98,7 @@ bindsym $mod+shift+r restart
 
 # ── Power menu ────────────────────────────────────────────────────────────────
 bindsym $mod+Escape exec ~/.config/polybar/forest/scripts/powermenu.sh
-bindsym $mod+l exec i3lock -c 212B30
+bindsym $mod+l exec --no-startup-id sh -c "physlock -m || i3lock -c 212B30"
 
 # ── Volume ────────────────────────────────────────────────────────────────────
 bindsym XF86AudioRaiseVolume exec ~/.config/i3/scripts/volctl.sh up
