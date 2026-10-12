@@ -38,7 +38,6 @@ phase_bar
 
 # ── Post-stow steps ───────────────────────────────────────────
 chmod +x "$HOME/.config/polybar/launch.sh" 2>/dev/null || true
-chmod +x "$HOME/.config/polybar/forest/launch.sh" 2>/dev/null || true
 
 [[ -f ~/.zshrc.local ]] || printf '# Machine-specific secrets and aliases — not tracked by git\n' > ~/.zshrc.local
 
