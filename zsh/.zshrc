@@ -103,14 +103,34 @@ alias ei3='hx ~/dotfiles/i3/.config/i3/config'
 alias ekitty='hx ~/dotfiles/kitty/.config/kitty/kitty.conf'
 alias ehx='hx ~/dotfiles/helix/.config/helix/config.toml'
 
-# Workspace: one zellij session per repo, named after it. Run again to resume it.
-# Layout: repo's .zellij/work.kdl if present, else the global "work" layout.
+# Zellij sessions are named after the repo (folder), never random.
+#   ws        start or resume this repo's workspace (repo layout or the global "work" layout)
+#   ws -n     start another session for the same repo: repo-2, repo-3, ...
+#   zellij    (no args) plain session, same naming, resumes if it already exists
+_zj_name() {  # $1 = base name, $2 = "new" to force the next free number
+  local base=$1 name=$1 i=2
+  if [[ $2 == new ]]; then
+    while command zellij list-sessions -ns 2>/dev/null | grep -qx -- "$name"; do name=$base-$i; (( i++ )); done
+  fi
+  print -r -- $name
+}
+_zj_root() { git rev-parse --show-toplevel 2>/dev/null || pwd }
+
 ws() {
   [[ -n "$ZELLIJ" ]] && { echo "already inside zellij"; return 1; }
-  local root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-  local layout=work
+  local root=$(_zj_root) layout=work
   [[ -f $root/.zellij/work.kdl ]] && layout=$root/.zellij/work.kdl
-  (cd "$root" && zellij attach --create "${root:t}" options --default-layout "$layout")
+  local name=$(_zj_name ${root:t} ${${1:#-n}:+x}${${(M)1:#-n}:+new})
+  (cd "$root" && command zellij attach --create "$name" options --default-layout "$layout")
+}
+
+zellij() {
+  if (( $# == 0 )) && [[ -z "$ZELLIJ" ]]; then
+    local root=$(_zj_root)
+    (cd "$root" && command zellij attach --create "$(_zj_name ${root:t})")
+  else
+    command zellij "$@"
+  fi
 }
 
 # Misc
