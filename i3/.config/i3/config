@@ -2,7 +2,7 @@
 set $mod Mod4
 
 # ── Font ──────────────────────────────────────────────────────────────────────
-font pango:JetBrainsMonoNL Nerd Font 10
+font pango:JetBrainsMonoNL Nerd Font 11
 
 # ── Startup ───────────────────────────────────────────────────────────────────
 exec_always --no-startup-id xsetroot -solid '#0a0e14'
@@ -78,9 +78,9 @@ bindsym $mod+shift+8 move container to workspace $ws8
 bindsym $mod+shift+9 move container to workspace $ws9
 bindsym $mod+shift+0 move container to workspace $ws10
 
-# Apps live on their own workspace
-assign [class="(?i)^zen"] $ws2
-assign [class="(?i)^obsidian"] $ws3
+# Apps live on their own workspace, and opening one jumps you there
+for_window [class="(?i)^zen"] move container to workspace $ws2, workspace $ws2
+for_window [class="(?i)^obsidian"] move container to workspace $ws3, workspace $ws3
 
 # ── Resize mode ───────────────────────────────────────────────────────────────
 mode "resize" {
