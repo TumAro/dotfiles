@@ -9,7 +9,6 @@ Theme: Ayu Dark everywhere, palette in `theme/ayu-dark.md`.
 | --- | --- |
 | i3 | window manager, named workspaces (term, zen, notes) |
 | polybar | thin bar: workspaces, date, volume; temp >50°C and battery <50% only when needed |
-| picom | compositor, blur behind kitty and vesktop |
 | kitty | terminal |
 | zsh | zinit + starship + zoxide, `ws` workspace function |
 | helix | editor, LSPs: basedpyright, ruff, tinymist, harper-ls |
@@ -31,7 +30,7 @@ basedpyright (uv), uv and tdx (pinned releases).
 | Super+Escape | power menu (rofi) |
 | Super+n | Wi-Fi menu (rofi + nmcli) |
 | Super+l | lock screen (i3lock, ayu colour) |
-| Super+p | pin the focused app to the current workspace (toggle; rules in `i3/.config/i3/pinned.conf`) |
+| Super+p | pin the focused app to its own workspace (open it on a fresh workspace first; toggle; rules in `i3/.config/i3/pinned.conf`) |
 | Super+1/2/3 | workspaces term / zen / notes |
 | ws (in a repo) | zellij session named after the repo; run again to resume |
 

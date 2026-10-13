@@ -20,22 +20,22 @@
   --ayu-blue: #59c2ff;
   --ayu-purple: #d2a6ff;
 
-  --background-primary: rgba(10, 14, 20, 0.72) !important;
-  --background-secondary: rgba(15, 19, 26, 0.62) !important;
-  --background-secondary-alt: rgba(21, 26, 34, 0.58) !important;
-  --background-tertiary: rgba(10, 14, 20, 0.78) !important;
-  --background-floating: rgba(15, 19, 26, 0.86) !important;
-  --background-base-lowest: rgba(10, 14, 20, 0.72) !important;
-  --background-base-low: rgba(15, 19, 26, 0.64) !important;
-  --background-base-lower: rgba(15, 19, 26, 0.68) !important;
-  --background-base-medium: rgba(21, 26, 34, 0.72) !important;
-  --background-base-high: rgba(28, 34, 44, 0.80) !important;
-  --background-surface-high: rgba(28, 34, 44, 0.80) !important;
-  --background-surface-higher: rgba(37, 44, 56, 0.84) !important;
-  --bg-base-primary: rgba(10, 14, 20, 0.72) !important;
-  --bg-base-secondary: rgba(15, 19, 26, 0.64) !important;
-  --bg-base-tertiary: rgba(10, 14, 20, 0.78) !important;
-  --bg-surface-overlay: rgba(15, 19, 26, 0.86) !important;
+  --background-primary: rgb(10, 14, 20) !important;
+  --background-secondary: rgb(15, 19, 26) !important;
+  --background-secondary-alt: rgb(21, 26, 34) !important;
+  --background-tertiary: rgb(10, 14, 20) !important;
+  --background-floating: rgb(15, 19, 26) !important;
+  --background-base-lowest: rgb(10, 14, 20) !important;
+  --background-base-low: rgb(15, 19, 26) !important;
+  --background-base-lower: rgb(15, 19, 26) !important;
+  --background-base-medium: rgb(21, 26, 34) !important;
+  --background-base-high: rgb(28, 34, 44) !important;
+  --background-surface-high: rgb(28, 34, 44) !important;
+  --background-surface-higher: rgb(37, 44, 56) !important;
+  --bg-base-primary: rgb(10, 14, 20) !important;
+  --bg-base-secondary: rgb(15, 19, 26) !important;
+  --bg-base-tertiary: rgb(10, 14, 20) !important;
+  --bg-surface-overlay: rgb(15, 19, 26) !important;
   --text-normal: var(--ayu-fg) !important;
   --text-muted: var(--ayu-grey1) !important;
   --text-link: var(--ayu-blue) !important;
@@ -54,7 +54,7 @@ body,
 [class*="appMount"],
 [class*="app_"],
 [class*="bg_"] {
-  background: transparent !important;
+  background: var(--ayu-bg0) !important;
 }
 
 [class*="layer_"],
@@ -69,22 +69,22 @@ body,
 [class*="channelTextArea_"],
 [class*="scrollableContainer_"],
 [class*="themed_"] {
-  background-color: transparent !important;
+  background-color: var(--ayu-bg0) !important;
 }
 
 [class*="message_"]:hover,
 [class*="selected_"],
 [class*="modeSelected_"],
 [class*="interactiveSelected_"] {
-  background-color: rgba(230, 180, 80, 0.38) !important;
+  background-color: rgb(230, 180, 80) !important;
 }
 
 [class*="mentioned_"] {
-  background-color: rgba(230, 180, 80, 0.12) !important;
+  background-color: rgb(230, 180, 80) !important;
 }
 
 [class*="replying_"] {
-  background-color: rgba(194, 217, 76, 0.12) !important;
+  background-color: rgb(194, 217, 76) !important;
 }
 
 [class*="markup_"] a {

@@ -39,7 +39,6 @@ _check "starship.toml" "$DOTFILES/starship/.config/starship.toml" "$HOME/.config
 _check "helix config" "$DOTFILES/helix/.config/helix/config.toml" "$HOME/.config/helix/config.toml"
 _check "helix languages" "$DOTFILES/helix/.config/helix/languages.toml" "$HOME/.config/helix/languages.toml"
 _check "vesktop theme" "$DOTFILES/vesktop/.config/vesktop/themes/minimal.styles.css" "$HOME/.config/vesktop/themes/minimal.styles.css"
-_check "picom"         "$DOTFILES/picom/.config/picom"            "$HOME/.config/picom"
 _check "zellij"        "$DOTFILES/zellij/.config/zellij"          "$HOME/.config/zellij"
 
 # tools that deps.sh installs outside stow

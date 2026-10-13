@@ -6,7 +6,6 @@ font pango:JetBrainsMonoNL Nerd Font 11
 
 # ── Startup ───────────────────────────────────────────────────────────────────
 exec_always --no-startup-id xsetroot -solid '#0a0e14'
-exec --no-startup-id picom --daemon --experimental-backends
 exec --no-startup-id udiskie --tray
 exec --no-startup-id redshift -O 3500
 exec --no-startup-id touchegg
@@ -82,9 +81,9 @@ bindsym $mod+shift+0 move container to workspace $ws10
 for_window [class="(?i)^zen"] move container to workspace $ws2, workspace $ws2
 for_window [class="(?i)^obsidian"] move container to workspace $ws3, workspace $ws3
 
-# Extra pinned apps: Super+p pins the focused app to the current workspace (toggle)
+# Big apps change over time, so no fixed list: open the app on a fresh workspace (Super+4..9),
+# then Super+p pins it there (names the workspace after it). Super+p again unpins.
 include ~/.config/i3/pinned.conf
-include ~/.config/i3/bigapps.conf
 bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/pin.sh
 
 # ── Resize mode ───────────────────────────────────────────────────────────────

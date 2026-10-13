@@ -19,12 +19,10 @@ phase_header "Phase 1: Dependencies"
 
 # ── apt packages ──────────────────────────────────────────────
 step_start "apt packages"
-PICOM_PKG="picom"
-apt-cache show picom &>/dev/null 2>&1 || PICOM_PKG="compton"
 if sudo apt update -qq >> "$LOG_FILE" 2>&1 && \
    sudo apt install -y \
      zsh git curl wget fzf ripgrep fd-find bat \
-     i3 i3status rofi "$PICOM_PKG" xclip maim polybar redshift \
+     i3 i3status rofi xclip maim polybar redshift \
      build-essential cmake python3 python3-pip \
      fontconfig wmctrl stow unzip \
      gvfs gvfs-backends thunar >> "$LOG_FILE" 2>&1; then
