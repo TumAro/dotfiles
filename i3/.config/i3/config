@@ -82,6 +82,10 @@ bindsym $mod+shift+0 move container to workspace $ws10
 for_window [class="(?i)^zen"] move container to workspace $ws2, workspace $ws2
 for_window [class="(?i)^obsidian"] move container to workspace $ws3, workspace $ws3
 
+# Extra pinned apps: Super+p pins the focused app to the current workspace (toggle)
+include ~/.config/i3/pinned.conf
+bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/pin.sh
+
 # ── Resize mode ───────────────────────────────────────────────────────────────
 mode "resize" {
   bindsym Left  resize shrink width 10 px or 10 ppt

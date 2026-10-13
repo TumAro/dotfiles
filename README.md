@@ -30,11 +30,12 @@ basedpyright (uv), uv and tdx (pinned releases).
 | Super+space | app launcher (rofi) |
 | Super+Escape | power menu (rofi) |
 | Super+n | Wi-Fi menu (rofi + nmcli) |
+| Super+p | pin the focused app to the current workspace (toggle; rules in `i3/.config/i3/pinned.conf`) |
 | Super+1/2/3 | workspaces term / zen / notes |
 | ws (in a repo) | zellij session named after the repo; run again to resume |
 
 Inside zellij: `Alt+s` pane right, `Alt+d` pane down, `Alt+t` new tab, `Alt+[` / `Alt+]` switch tab,
-`Alt+arrows` move focus, `Alt+m` todo (tdx), `Alt+y` yazi, `Alt+q` detach, `Ctrl+g` lock/unlock.
+`Alt+arrows` move focus, `Alt+x` close pane, `Alt+c` close tab, `Alt+m` todo (tdx), `Alt+y` yazi, `Alt+q` detach, `Ctrl+g` lock/unlock.
 
 ## Layouts
 
