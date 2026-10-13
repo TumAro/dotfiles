@@ -8,7 +8,8 @@ args = ["--stdio"]
 
 [[language]]
 name = "python"
-language-servers = ["basedpyright", "ruff"]
+# basedpyright (type checker) costs ~100-200 MB per Helix; re-add "basedpyright" first to get it back
+language-servers = ["ruff"]
 
 [[language]]
 name = "typst"
