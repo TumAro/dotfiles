@@ -3,7 +3,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=23
+STEP_TOTAL=24
 
 # ── Architecture detection ─────────────────────────────────────
 _ARCH="$(uname -m)"
@@ -316,5 +316,38 @@ else
     step_fail
   fi
 fi
+
+# ── zellij plugins (local .wasm, sha256-pinned; permissions pre-granted) ──
+step_start "zellij plugins"
+ZP="$DOTFILES/zellij/.config/zellij/plugins"
+mkdir -p "$ZP" ~/.cache/zellij
+_zplug_ok=1
+while read -r _n _u _h; do
+  if [[ -f "$ZP/$_n" ]] && echo "$_h  $ZP/$_n" | sha256sum -c - >> "$LOG_FILE" 2>&1; then continue; fi
+  wget -qO "$ZP/$_n" "$_u" >> "$LOG_FILE" 2>&1 && echo "$_h  $ZP/$_n" | sha256sum -c - >> "$LOG_FILE" 2>&1 || _zplug_ok=0
+done <<'PLUGINS'
+zjstatus.wasm https://github.com/dj95/zjstatus/releases/download/v0.25.0/zjstatus.wasm 282ceab219e56e1908c9fac33907241fe6c3e1ef7d85faab3e5f438cef87b8fe
+zjstatus-hints.wasm https://github.com/b0o/zjstatus-hints/releases/download/v0.1.4/zjstatus-hints.wasm 936c55e9025c0edbd43421383efc151bdfdc78e924f966bfe9e7c682bec8719d
+zj-quit.wasm https://github.com/cristiand391/zj-quit/releases/download/0.3.1/zj-quit.wasm 25262718637648b342a2684c8383fcd78755dd357a8d1bd3bfd7edb3da137f94
+PLUGINS
+# pre-grant the permissions each plugin asks for, so no y/n prompt appears in the bar
+_perm=~/.cache/zellij/permissions.kdl; touch "$_perm"
+grep -qF "zjstatus.wasm" "$_perm" || cat >> "$_perm" <<PERMS
+"$HOME/.config/zellij/plugins/zjstatus.wasm" {
+    ReadApplicationState
+    ChangeApplicationState
+    RunCommands
+}
+"$HOME/.config/zellij/plugins/zjstatus-hints.wasm" {
+    ReadApplicationState
+    ReadCliPipes
+    MessageAndLaunchOtherPlugins
+}
+"$HOME/.config/zellij/plugins/zj-quit.wasm" {
+    ReadApplicationState
+    ChangeApplicationState
+}
+PERMS
+if (( _zplug_ok )); then step_done; else step_fail "download or sha256 mismatch"; fi
 
 phase_bar
