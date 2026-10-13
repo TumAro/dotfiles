@@ -1,19 +1,4 @@
-// Ayu Dark: palette in ~/dotfiles/theme/ayu-dark.md
-themes {
-    ayu_dark {
-        fg 179 177 173
-        bg 10 14 20
-        black 21 26 34
-        red 255 51 51
-        green 194 217 76
-        yellow 230 180 80
-        blue 89 194 255
-        magenta 210 166 255
-        cyan 149 230 203
-        orange 255 143 64
-        white 191 189 182
-    }
-}
+// built-in zellij theme (zellij.dev/documentation/theme-list); no custom colours
 theme "ayu_dark"
 
 // no borders; only the focused pane is marked by dimming the others
@@ -29,6 +14,7 @@ keybinds {
         bind "Alt t" { NewTab; }
         bind "Alt q" { Detach; }
         bind "Alt x" { CloseFocus; }
+        bind "Alt /" { Run "sh" "-c" "bat --paging=always --style=plain --color=never ~/.config/zellij/keys.txt" { floating true; close_on_exit true; }; }
         bind "Alt c" { CloseTab; }
         bind "Alt s" { NewPane "Right"; }
         bind "Alt d" { NewPane "Down"; }

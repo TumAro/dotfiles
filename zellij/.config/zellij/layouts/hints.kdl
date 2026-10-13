@@ -1,12 +1,9 @@
-// plain zellij: tabs + key hints for the current mode, both at the bottom
+// plain zellij: one thin bar at the bottom; key cheatsheet on Alt+/
 layout {
     default_tab_template {
         children
         pane size=1 borderless=true {
-            plugin location="tab-bar"
-        }
-        pane size=2 borderless=true {
-            plugin location="status-bar"
+            plugin location="compact-bar"
         }
     }
 }
