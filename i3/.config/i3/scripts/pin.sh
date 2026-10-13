@@ -11,6 +11,12 @@ def walk(n,ws=None):
     for c in n.get("nodes",[])+n.get("floating_nodes",[]): walk(c,ws)
 walk(json.load(sys.stdin))')
 [[ -z "$class" ]] && exit 0
+# unnamed workspace (just a number): name it after the app so the bar shows what lives there
+if [[ "$ws" =~ ^[0-9]+$ ]]; then
+  new="$ws:${class,,}"
+  i3-msg "rename workspace \"$ws\" to \"$new\"" >/dev/null
+  ws="$new"
+fi
 rule="for_window [class=\"^${class}\$\"] move container to workspace \"$ws\", workspace \"$ws\""
 if grep -qF "[class=\"^${class}\$\"]" "$f"; then
   grep -vF "[class=\"^${class}\$\"]" "$f" > "$f.tmp"; mv "$f.tmp" "$f"; msg="Unpinned $class"

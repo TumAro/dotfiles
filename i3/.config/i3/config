@@ -7,6 +7,7 @@ font pango:JetBrainsMonoNL Nerd Font 11
 # ── Startup ───────────────────────────────────────────────────────────────────
 exec_always --no-startup-id xsetroot -solid '#0a0e14'
 exec --no-startup-id picom --daemon --experimental-backends
+exec --no-startup-id dunst
 exec --no-startup-id udiskie --tray
 exec --no-startup-id redshift -O 3500
 exec --no-startup-id touchegg
@@ -106,7 +107,7 @@ bindsym $mod+shift+r restart
 
 # ── Power menu ────────────────────────────────────────────────────────────────
 bindsym $mod+Escape exec ~/.config/polybar/forest/scripts/powermenu.sh
-bindsym $mod+l exec --no-startup-id sh -c "physlock -m || i3lock -c 212B30"
+bindsym $mod+l exec --no-startup-id i3lock -c 0a0e14 -e -f
 
 # ── Volume ────────────────────────────────────────────────────────────────────
 bindsym XF86AudioRaiseVolume exec ~/.config/i3/scripts/volctl.sh up
