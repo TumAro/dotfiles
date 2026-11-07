@@ -5,7 +5,7 @@ set -uo pipefail
 DOTFILES="$(cd "$(dirname "$0")/.." && pwd)"
 source "$DOTFILES/.scripts/utils.sh"
 
-STEP_TOTAL=17
+STEP_TOTAL=23
 
 phase_header "Migration: Clean up for stow"
 
@@ -44,6 +44,13 @@ _remove_symlink "$HOME/.config/polybar/polybar" "polybar tangle artifact"
 _backup_real "$HOME/.config/yazi"    "yazi dir"
 _backup_real "$HOME/.config/polybar" "polybar dir"
 
+# Old link.sh may have symlinked the whole dir into the repo. Drop it first,
+# else the backup below resolves through it and moves the repo's own files.
+_remove_symlink "$HOME/.config/yazi"    "yazi dir symlink"
+_remove_symlink "$HOME/.config/polybar" "polybar dir symlink"
+_remove_symlink "$HOME/.config/kitty" "kitty dir symlink"
+_remove_symlink "$HOME/.config/i3"    "i3 dir symlink"
+
 # Remove old link.sh symlinks, then back up any real file left in stow's way
 # (fresh installs ship a real ~/.zshrc etc., not a symlink)
 for pair in \
@@ -52,6 +59,7 @@ for pair in \
   "$HOME/.config/kitty/kitty.conf:kitty.conf" \
   "$HOME/.config/kitty/colors.conf:kitty colors.conf" \
   "$HOME/.config/i3/config:i3 config" \
+  "$HOME/.local/bin/bt-buds:bt-buds" \
   "$HOME/.config/starship.toml:starship.toml"; do
   dst="${pair%%:*}" label="${pair#*:}"
   _remove_symlink "$dst" "$label"

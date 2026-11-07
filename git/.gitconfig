@@ -39,3 +39,11 @@
 
 [pull]
 	rebase = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[safe]
+	directory = /mnt/B06A67016A66C3A6/Unity/Projects/DateWithGod
+	directory = /mnt/B06A67016A66C3A6/Unity/Projects/Manware-s-AI-Learning-Toolkit
