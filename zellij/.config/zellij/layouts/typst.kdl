@@ -1,0 +1,14 @@
+// used by `typ`; helix on $TYP_FILE. Live PDF preview is a zathura window tiled by i3 on the right
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zjstatus"
+        }
+    }
+    tab name="typst" {
+        pane name="helix" command="sh" {
+            args "-c" "exec hx \"$TYP_FILE\""
+        }
+    }
+}

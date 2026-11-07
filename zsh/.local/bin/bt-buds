@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
+# Connect buds, switch to headset profile (mic works), make them default speaker + mic. PipeWire/wpctl.
 set -euo pipefail
 MAC="B0:38:E2:A0:E3:1F"
-bluetoothctl connect "$MAC"
-sleep 3
-pactl set-card-profile "bluez_card.${MAC//:/_}" headset-head-unit
-sleep 1
-pactl set-default-sink "bluez_output.${MAC//:/_}.1"
+NAME="realme Buds"
+bluetoothctl connect "$MAC" >/dev/null || true
+sect() { wpctl status | sed -n "/$1:/,/$2:/p" | grep -m1 "$NAME" | grep -oE '[0-9]+\.' | head -1 | tr -d .; }
+for _ in $(seq 10); do dev=$(wpctl status | sed -n '/Devices:/,/Sinks:/p' | grep -m1 "$NAME" | grep -oE '[0-9]+\.' | head -1 | tr -d .); [ -n "$dev" ] && break; sleep 1; done
+[ -n "${dev:-}" ] || { echo "buds not found in PipeWire"; exit 1; }
+# profile index for headset-head-unit (varies per device)
+idx=$(pw-cli enum-params "$dev" EnumProfile | awk '/Profile:index/{getline; i=$2} /"headset-head-unit"/{print i; exit}')
+wpctl set-profile "$dev" "$idx"
+for _ in $(seq 10); do src=$(sect Sources 'Source endpoints'); [ -n "$src" ] && break; sleep 1; done
+sink=$(sect Sinks 'Sink endpoints')
+wpctl set-default "$sink"
+wpctl set-default "$src"
+echo "buds: sink $sink, mic $src"

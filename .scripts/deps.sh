@@ -24,7 +24,7 @@ if sudo apt update -qq >> "$LOG_FILE" 2>&1 && \
      zsh git curl wget fzf ripgrep fd-find bat \
      i3 i3status rofi xclip maim polybar redshift \
      build-essential cmake python3 python3-pip \
-     fontconfig wmctrl stow unzip \
+     fontconfig wmctrl stow unzip zathura zathura-pdf-poppler \
      gvfs gvfs-backends thunar >> "$LOG_FILE" 2>&1; then
   step_done
 else

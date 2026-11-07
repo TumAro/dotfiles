@@ -124,6 +124,17 @@ ws() {
   (cd "$root" && command zellij attach --create "$name" options --default-layout "$layout")
 }
 
+# typ file.typ   Typst writing: helix in zellij (left) + live PDF in zathura (right, i3 tiles it). Needs a running i3.
+typ() {
+  [[ -n "$ZELLIJ" ]] && { echo "already inside zellij"; return 1; }
+  local f=${1:-main.typ}
+  [[ -f $f ]] || print -r -- '= Title' > $f
+  typst compile $f || return 1
+  (zathura ${f:r}.pdf &>/dev/null &)
+  sleep 0.4; i3-msg -q focus left
+  TYP_FILE=$f command zellij attach --create "typ-${PWD:t}-${f:t:r}" options --default-layout typst
+}
+
 zellij() {
   if (( $# == 0 )) && [[ -z "$ZELLIJ" ]]; then
     local root=$(_zj_root)
@@ -174,3 +185,10 @@ nvm() {
 
 # ── Machine-local overrides (secrets, machine-specific aliases): keep LAST ────
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# docker on demand (daemon disabled at boot to save RAM)
+alias docker-start='sudo systemctl start docker'
+alias docker-stop='sudo systemctl stop docker.service docker.socket containerd.service'
+
+# usage: vpn [jp|nl|us]  (default jp); configs live in ~/.config/vpn, not in dotfiles
+vpn() { sudo openvpn --config ~/.config/vpn/${1:-jp}-*.ovpn --auth-user-pass /dev/stdin <<< "$(pass vpn/proton)"; }

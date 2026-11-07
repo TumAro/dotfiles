@@ -8,7 +8,8 @@ font pango:JetBrainsMonoNL Nerd Font 11
 exec_always --no-startup-id xsetroot -solid '#0a0e14'
 exec --no-startup-id udiskie --tray
 exec --no-startup-id redshift -O 3500
-exec --no-startup-id touchegg
+# exec --no-startup-id touchegg  # old v1 grabs 2-finger gestures, breaks native pinch/scroll
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # ── Terminal ──────────────────────────────────────────────────────────────────
