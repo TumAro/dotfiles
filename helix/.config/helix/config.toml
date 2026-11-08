@@ -30,4 +30,8 @@ right = ["version-control", "position"]
 [keys.normal]
 C-s = ":w"
 
+# tasks: select lines, Space x = non-tasks become "- [ ] " (indent kept); if all are tasks, check all (uncheck if all done)
+[keys.normal.space]
+x = ["extend_to_line_bounds", ''':pipe awk '{l[NR]=$0; if($0~/[^[:blank:]]/ && $0!~/^[[:blank:]]*([-*+]|[0-9]+[.)]) \[[ xX]\]/)n=1; if($0~/^[[:blank:]]*([-*+]|[0-9]+[.)]) \[ \]/)u=1} END{for(i=1;i<=NR;i++){s=l[i]; if(s!~/[^[:blank:]]/);else if(n){if(s!~/^[[:blank:]]*([-*+]|[0-9]+[.)]) \[[ xX]\]/){match(s,/^[[:blank:]]*/);r=substr(s,RLENGTH+1);sub(/^([-*+]|[0-9]+[.)]) +/,"",r);s=substr(s,1,RLENGTH) "- [ ] " r}}else if(u)sub(/\[ \]/,"[x]",s);else sub(/\[[xX]\]/,"[ ]",s);print s}}' ''']
+
 [keys.insert]
