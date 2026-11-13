@@ -12,13 +12,15 @@ keybinds {
     // default Ctrl q quits the whole session instantly; use Alt+k (asks first) instead
     unbind "Ctrl q"
     shared_except "locked" {
-        bind "Alt m" { Run "tdx" { floating true; close_on_exit true; }; }
+        bind "Alt m" { Run "sh" "-c" "exec hx \"$(git rev-parse --show-toplevel 2>/dev/null || echo $HOME)/notes.md\"" { floating true; close_on_exit true; }; }
         bind "Alt t" { NewTab; }
         bind "Alt q" { Detach; }
         bind "Alt k" { LaunchOrFocusPlugin "zj-quit" { floating true; move_to_focused_tab true; }; }
         bind "Alt x" { CloseFocus; }
         bind "Alt /" { Run "sh" "-c" "bat --paging=always --style=plain --color=never ~/.config/zellij/keys.txt" { floating true; close_on_exit true; }; }
         bind "Alt c" { CloseTab; }
+        bind "Alt [" { GoToPreviousTab; }
+        bind "Alt ]" { GoToNextTab; }
         bind "Alt s" { NewPane "Right"; }
         bind "Alt d" { NewPane "Down"; }
         bind "Alt y" { Run "yazi" { floating true; close_on_exit true; }; }

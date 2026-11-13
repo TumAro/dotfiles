@@ -3,7 +3,7 @@ ZELLIJ KEYS   (q closes this)
  panes     Alt+s  side        Alt+d  below       Alt+x  close pane
            Alt+arrows / Alt+h j k l  move focus  Alt+f  float on/off
  tabs      Alt+t  new         Alt+c  close       Alt+[ / Alt+]  prev / next
- apps      Alt+m  todo (tdx)  Alt+y  yazi
+ apps      Alt+m  notes+todos (repo notes.md)  Alt+y  yazi
  session   Alt+q  detach (keeps running)   Alt+k  close session (asks y/Esc first)
  lock      Ctrl+g  lock / unlock zellij keys (use if a key does nothing)
  more      Ctrl+p  pane mode   Ctrl+n  resize   Ctrl+s  scroll/search
