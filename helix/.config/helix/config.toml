@@ -25,7 +25,7 @@ select = "underline"
 
 [editor.statusline]
 left = ["mode", "spinner", "file-name"]
-right = ["version-control", "position"]
+right = ["diagnostics", "version-control", "position"]
 
 [keys.normal]
 C-s = ":w"

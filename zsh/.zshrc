@@ -190,5 +190,4 @@ nvm() {
 alias docker-start='sudo systemctl start docker'
 alias docker-stop='sudo systemctl stop docker.service docker.socket containerd.service'
 
-# usage: vpn [jp|nl|us]  (default jp); configs live in ~/.config/vpn, not in dotfiles
-vpn() { sudo openvpn --config ~/.config/vpn/${1:-jp}-*.ovpn --auth-user-pass /dev/stdin <<< "$(pass vpn/proton)"; }
+export CMAKE_EXPORT_COMPILE_COMMANDS=1

@@ -25,3 +25,8 @@ language-servers = ["harper-ls"]
 formatterMode = "typstyle"
 exportPdf = "onType"
 semanticTokens = "disable"
+
+
+[language-server.clangd]
+command = "clangd"
+args = ["-j=2", "--malloc-trim", "--header-insertion=never", "--query-driver=/usr/bin/*"]
