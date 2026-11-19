@@ -30,3 +30,22 @@ semanticTokens = "disable"
 [language-server.clangd]
 command = "clangd"
 args = ["-j=2", "--malloc-trim", "--header-insertion=never", "--query-driver=/usr/bin/*"]
+
+# web
+[language-server.emmet-ls]
+command = "emmet-language-server"
+args = ["--stdio"]
+
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server", "emmet-ls"]
+formatter = { command = "prettier", args = ["--stdin-filepath", "file.html"] }
+
+[[language]]
+name = "css"
+language-servers = ["vscode-css-language-server", "emmet-ls"]
+formatter = { command = "prettier", args = ["--stdin-filepath", "file.css"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = "prettier", args = ["--stdin-filepath", "file.js"] }
